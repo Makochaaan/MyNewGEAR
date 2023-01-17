@@ -726,6 +726,7 @@ GameObject:
   - component: {fileID: 384019345}
   - component: {fileID: 384019344}
   - component: {fileID: 384019343}
+  - component: {fileID: 384019347}
   m_Layer: 5
   m_Name: Main Button
   m_TagString: Untagged
@@ -838,7 +839,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 384019347}
+        m_TargetAssemblyTypeName: HomeButtonScript, Assembly-CSharp
+        m_MethodName: OnClickHomeButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &384019346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -856,6 +869,18 @@ MonoBehaviour:
   normalText: {fileID: 275627381}
   highlightedText: {fileID: 1398338927}
   pressedText: {fileID: 1045856753}
+--- !u!114 &384019347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384019341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3396a6cd30cbf04b8aa9b36f2817675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &459629609
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,7 +1483,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Game Scene
+  m_text: GameScene
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

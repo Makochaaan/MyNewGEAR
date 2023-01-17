@@ -6,8 +6,15 @@ using UnityEngine.SceneManagement;
 public class StartButtonScript : MonoBehaviour
 {
 
+
     public void OnClickStartButton()
     {
+        StartCoroutine("LoadStageSelectScene");
+    }
+
+    IEnumerator LoadStageSelectScene()
+    {
+        yield return new WaitForSeconds(0.35f);
         SceneManager.LoadScene("StageSelectScene");
     }
 
