@@ -70,3 +70,11 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Sozai which Fuji downloaded
+/[Aa]ssets/Archanor
+/[Aa]ssets/SciFi Warehouse Kit
+/[Aa]ssets/FishNet
+/[Aa]ssets/_TerrainAutoUpgrade
+/[Aa]ssets/StonyGroundPackage
+/[Aa]ssets/Samples
