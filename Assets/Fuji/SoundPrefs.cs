@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//using DG.Tweening;
 using System.IO;
 
+[RequireComponent(typeof (AudioSource))]
 public class SoundPrefs : MonoBehaviour
 {
-    public AudioSource bgmSource;
+    private AudioSource bgmSource;
+    [SerializeField] private AudioSource shiftUIAudioSource;
     public Slider bgmSlider, seSlider;
     [HideInInspector] public string filePath;
     [HideInInspector] public SaveData saveData;
@@ -17,7 +18,7 @@ public class SoundPrefs : MonoBehaviour
     {
         filePath = Application.persistentDataPath + "/" + ".savedata.json";
         StartCoroutine("Initialize");
-        bgmSource = GameObject.Find("BGMPlayer").GetComponent<AudioSource>();
+        bgmSource = GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
@@ -51,8 +52,14 @@ public class SoundPrefs : MonoBehaviour
         yield return null;
         if (bgmSource != null)
         {
-            //bgmSource.DOFade(saveData.bgmVolume, 1);
-            //bgmSource.Play();
+            bgmSource.volume = saveData.bgmVolume;
+            bgmSource.loop = true;
+            bgmSource.spatialBlend = 0;
+            bgmSource.Play();
+        }
+        if(shiftUIAudioSource != null)
+        {
+            shiftUIAudioSource.volume = saveData.seVolume;
         }
     }
 
