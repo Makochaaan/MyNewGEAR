@@ -8,4 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Fuji/DebugRoom_Fuji.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Hiraku/TitleScene.unity
+    guid: 706ad668b447a1a4885171b1562a89ae
+  - enabled: 1
+    path: Assets/Hiraku/StageSelectScene.unity
+    guid: a3b3a2b10f9e0ed49a307825ac3af563
+  - enabled: 1
+    path: Assets/Hiraku/GameScene.unity
+    guid: 560c08459b59e1c4a905b25f01d1868e
   m_configObjects: {}
