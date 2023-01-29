@@ -8,7 +8,7 @@ using System.IO;
 public class SoundPrefs : MonoBehaviour
 {
     private AudioSource bgmSource;
-    [SerializeField] private AudioSource shiftUIAudioSource;
+    private AudioSource shiftUIAudioSource;
     public Slider bgmSlider, seSlider;
     [HideInInspector] public string filePath;
     [HideInInspector] public SaveData saveData;
@@ -19,6 +19,14 @@ public class SoundPrefs : MonoBehaviour
         filePath = Application.persistentDataPath + "/" + ".savedata.json";
         StartCoroutine("Initialize");
         bgmSource = GetComponent<AudioSource>();
+        if(GameObject.Find("UIAudioSource").TryGetComponent(out AudioSource audioSource))
+        {
+            shiftUIAudioSource = audioSource;
+        }
+        else
+        {
+            Debug.LogError("UIAudioSource not found");
+        }
     }
 
     // Start is called before the first frame update
