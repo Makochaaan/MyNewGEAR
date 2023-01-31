@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerPartsFoundation))]
-public class PlayerWeaponGun : MonoBehaviour
+public class PlayerWeaponGun : PlayerPartsFoundation
 {
     private Transform muzzle;
     [SerializeField] private int fireRate, accuracy, energyConsumption, range;
@@ -13,23 +12,36 @@ public class PlayerWeaponGun : MonoBehaviour
     private Vector3 trailEnd;
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
+        base.Start();
         muzzle = transform.GetChild(0);
+        outline.OutlineColor = Color.red;
     }
-    //枠レベルを引数に銃の初期化処理
-    public void SetGunStatus(int slotLevel)
-    {
-        damageLevel = slotLevel <= 6 ? slotLevel : 6;
-        damage *= Mathf.Pow(1.15f, damageLevel - 1);
-    }
-
+    
     // Update is called once per frame
     void Update()
     {
         elapsedTime += Time.deltaTime;
     }
-    public void Fire()
+    public override int GetEquipSlotNumber(int slotNumber)
+    {
+        return slotNumber;
+    }
+    //枠レベルを引数に銃の初期化処理
+    public override void OnEquipped(Transform slotTransform, int slotLevel)
+    {
+        base.OnEquipped(slotTransform, slotLevel);
+        damageLevel = slotLevel <= 6 ? slotLevel : 6;
+        damage *= Mathf.Pow(1.15f, damageLevel - 1);
+        OnActivated();
+    }
+    public override void OnActivated()
+    {
+        base.OnActivated();
+        isActive = true;
+    }
+    public override void Use()
     {
         //連射確認
         if(elapsedTime > (float)1/fireRate)
@@ -66,7 +78,6 @@ public class PlayerWeaponGun : MonoBehaviour
             //銃声エフェクト、弾丸エフェクト
             SEManager.SharedInstance.PlaySE("GunFire",muzzle.position);
             VFXManager.SharedInstance.PlayLineRenderer($"GunBulletTrail{damageLevel}",new Vector3[2]{muzzle.position,trailEnd},0.1f);
-
         }
     }
 }

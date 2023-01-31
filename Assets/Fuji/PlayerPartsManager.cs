@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//装備枠クラス。オンオフ、場所、枠レベル、担当アイテムの基本スクリプトを格納する。
+//装備枠クラス。場所、枠レベル、担当アイテムの親クラスを格納する。
 [System.Serializable]
 public class PartsSlot
 {
-    public bool isActive;
     public Transform slotTransform;
     public int slotLevel;
     public PlayerPartsFoundation parts;
@@ -34,17 +33,16 @@ public class PlayerPartsManager : MonoBehaviour
     {
         inputActions = new Debug_Player();
         inputActions.Enable();
-        inputActions.Game.ItemSlot1.performed += context => EquipIfPressed(1);
-        inputActions.Game.ItemSlot2.performed += context => EquipIfPressed(2);
-        inputActions.Game.ItemSlot3.performed += context => EquipIfPressed(3);
-        inputActions.Game.ItemSlot4.performed += context => EquipIfPressed(4);
+        inputActions.Game.ItemSlot1.performed += context => SlotCheck(1);
+        inputActions.Game.ItemSlot2.performed += context => SlotCheck(2);
+        inputActions.Game.ItemSlot3.performed += context => SlotCheck(3);
+        inputActions.Game.ItemSlot4.performed += context => SlotCheck(4);
     }
     //装備枠を初期化
     private void InitializePartsSlots()
     {
         for (int i = 0; i < partsSlots.Length; i++)
         {
-            partsSlots[i].isActive = false;
             partsSlots[i].slotLevel = 0;
             partsSlots[i].parts = null;
         }
@@ -99,8 +97,8 @@ public class PlayerPartsManager : MonoBehaviour
         
         
     }
-    //装備枠に対する操作
-    private void EquipIfPressed(int slotNumberInArray)
+    //装備枠に対し、装備か交換かオンオフか確認
+    private void SlotCheck(int slotNumberInArray)
     {
         //有効な選択なし
         if (!selecting)
@@ -108,14 +106,14 @@ public class PlayerPartsManager : MonoBehaviour
             //装備が既にあるならオンオフ切り替え、なければreturn
             if (partsSlots[slotNumberInArray].parts != null)
             {
-                if (partsSlots[slotNumberInArray].isActive)
+                if (partsSlots[slotNumberInArray].parts.isActive)
                 {
-                    partsSlots[slotNumberInArray].isActive = false;
+                    partsSlots[slotNumberInArray].parts.isActive = false;
                     partsSlots[slotNumberInArray].parts.OnDeactivated();
                 }
                 else
                 {
-                    partsSlots[slotNumberInArray].isActive = true;
+                    partsSlots[slotNumberInArray].parts.isActive = true;
                     partsSlots[slotNumberInArray].parts.OnActivated();
                 }
             }
@@ -124,96 +122,66 @@ public class PlayerPartsManager : MonoBehaviour
         //有効な選択中
         else
         {
-            //装備か確認する(1/30時点では装備しかない)
+            //選択中オブジェクトが装備なのか確認する(1/30時点では装備しかない)
             if(selectionTemp.TryGetComponent(out PlayerPartsFoundation parts))
             {
-                //頭、銅、脚、背中専用パーツはその枠へ、その他は指定した枠へ、腕は左右のみ選べる、装着後オンにするか
-                switch (parts.type)
+                //オブジェクトに対し有効な入力か確認(腕に対し2、等は無効になる)
+                if (parts.GetEquipSlotNumber(slotNumberInArray) != -1)
                 {
-                    case PlayerPartsFoundation.PartsType.Head:
-                        EquipSwitchFunction(parts, 0, false);
-                        break;
-                    case PlayerPartsFoundation.PartsType.Body:
-                        EquipSwitchFunction(parts, 2, false);
-                        break;
-                    case PlayerPartsFoundation.PartsType.Arms:
-                        if (slotNumberInArray == 1 || slotNumberInArray == 3) EquipSwitchFunction(parts, slotNumberInArray, true);
-                        break;
-                    case PlayerPartsFoundation.PartsType.Legs:
-                        EquipSwitchFunction(parts, 5, false);
-                        break;
-                    case PlayerPartsFoundation.PartsType.Back:
-                        EquipSwitchFunction(parts, 4, false);
-                        break;
-                    case PlayerPartsFoundation.PartsType.Booster:
-                        EquipSwitchFunction(parts, slotNumberInArray, true);
-                        break;
-                    case PlayerPartsFoundation.PartsType.Gun:
-                        EquipSwitchFunction(parts, slotNumberInArray, true);
-                        break;
-                    case PlayerPartsFoundation.PartsType.Missile:
-                        EquipSwitchFunction(parts, slotNumberInArray, true);
-                        break;
-                    default:
-                        break;
+                    PlayerPartsFoundation myParts = partsSlots[parts.GetEquipSlotNumber(slotNumberInArray)].parts;
+                    //装備先の枠に装備がついているなら
+                    if (myParts != null)
+                    {
+                        //ついているのが腕なら
+                        if (myParts.gameObject.TryGetComponent(out PlayerPartsArm myArm))
+                        {
+                            //つけようとするのが腕なら交換、腕のレベルを枠に引き継ぐ
+                            if (parts.gameObject.TryGetComponent(out PlayerPartsArm selectedArm))
+                            {
+                                partsSlots[slotNumberInArray].slotLevel = myArm.armSlot.slotLevel;
+                                EquipParts(parts, parts.GetEquipSlotNumber(slotNumberInArray), true);
+                            }
+                            //つけようとするのが腕以外なら(1/30時点では装備しかない)腕に装備
+                            else
+                            {
+                                myArm.EquipOnArm(parts);
+                            }
+                        }
+                        //ついているのが腕でないなら交換
+                        else
+                        {
+                            EquipParts(parts, parts.GetEquipSlotNumber(slotNumberInArray), true);
+                        }
+                    }
+                    //ついていないなら装備
+                    else
+                    {
+                        EquipParts(parts, parts.GetEquipSlotNumber(slotNumberInArray), false);
+                    }
                 }
             }
         }
     }
-    //人型になるにあたり処理を分けた方が良いのでは
-    //switchで共通する部分。装着または交換
-    private void EquipSwitchFunction(PlayerPartsFoundation parts, int slotNumber,bool activate)
+    //装備か交換か
+    private void EquipParts(PlayerPartsFoundation parts, int slotNumber, bool releaseOldParts)
     {
-        //既に装備がついている場合
-        if (partsSlots[slotNumber].parts != null)
+        if (releaseOldParts)
         {
-            //腕以外なら解除する。オフ時処理、解除時処理、枠をオフに
-            if (partsSlots[slotNumber].parts.type != PlayerPartsFoundation.PartsType.Arms)
-            {
-                partsSlots[slotNumber].parts.OnDeactivated();
-                partsSlots[slotNumber].parts.OnReleased(partsSlots[slotNumber].slotLevel);
-                partsSlots[slotNumber].isActive = false;
-            }
-            //腕に対し、腕の交換か武器の交換か
-            else
-            {
-                //腕に武器をつける
-                if (parts.type != PlayerPartsFoundation.PartsType.Arms)
-                {
-                    //腕に書いてある装備スクリプトを実行
-                    //腕固有の機能なのでFoundationを経由しない方が良いとおもった
-                    partsSlots[slotNumber].parts.gameObject.GetComponent<PlayerPartsArm>().EquipOnArm(parts);
-                    return;
-                }
-                //腕を変えずに武器を変えてると腕にある枠のレベルだけ上がっているため、腕の交換の場合、腕からスロットレベルを引き継いで解除する
-                else
-                {
-                    partsSlots[slotNumber].slotLevel = partsSlots[slotNumber].parts.gameObject.GetComponent<PlayerPartsArm>().armSlot.slotLevel;
-                    partsSlots[slotNumber].parts.OnDeactivated();
-                    partsSlots[slotNumber].parts.OnReleased(partsSlots[slotNumber].slotLevel);
-                    partsSlots[slotNumber].isActive = false;
-                }
-            }
+            partsSlots[slotNumber].parts.OnDeactivated();
+            partsSlots[slotNumber].parts.OnReleased();
         }
-        //場所を枠の場所に、親を枠に、スクリプト取得、オンオフ設定、枠レベルUP、装備時処理とオン時処理
-        //※腕に武器を装着するとここは実行されない※
-        parts.transform.position = partsSlots[slotNumber].slotTransform.position;
-        parts.transform.rotation = partsSlots[slotNumber].slotTransform.rotation;
-        parts.transform.parent = partsSlots[slotNumber].slotTransform;
-        partsSlots[slotNumber].parts = parts;
-        partsSlots[slotNumber].isActive = activate;
         partsSlots[slotNumber].slotLevel++;
-        parts.OnEquipped(partsSlots[slotNumber].slotLevel);
-        if (activate) parts.OnActivated();
+        parts.OnEquipped(partsSlots[slotNumber].slotTransform, partsSlots[slotNumber].slotLevel);
+        partsSlots[slotNumber].parts = parts;
     }
     //オン状態の装備を使う
     private void UseActiveWeapon()
     {
         for (int i = 0; i < partsSlots.Length; i++)
         {
-            if (partsSlots[i].isActive)
+            if (partsSlots[i].parts != null && partsSlots[i].parts.isActive)
             {
-                partsSlots[i].parts.UseWeapon();
+                partsSlots[i].parts.Use();
             }
         }
     }
