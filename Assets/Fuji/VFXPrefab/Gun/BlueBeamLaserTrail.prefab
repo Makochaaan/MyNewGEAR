@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6336506548955448163}
   - component: {fileID: 6336506548962727769}
+  - component: {fileID: 9153551993049173842}
   m_Layer: 0
   m_Name: BlueBeamLaserTrail
   m_TagString: Untagged
@@ -140,3 +141,16 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &9153551993049173842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6336506548955280821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e91d3f6bc63575342afc068fc545cd05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.1

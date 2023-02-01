@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6815912908156237331}
   - component: {fileID: 6815912908146851645}
+  - component: {fileID: -2674366824217991836}
   m_Layer: 0
   m_Name: PurpleBeamLaserTrail
   m_TagString: Untagged
@@ -140,3 +141,16 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &-2674366824217991836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815912908155967913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e91d3f6bc63575342afc068fc545cd05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.1

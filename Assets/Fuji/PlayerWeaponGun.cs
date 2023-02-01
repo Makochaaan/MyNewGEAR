@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerWeaponGun : PlayerPartsFoundation
 {
     private Transform muzzle;
-    [SerializeField] private int fireRate, accuracy, energyConsumption, range;
+    //連射速度、一発あたりの弾数、二個目以降の集弾性、燃費、射程
+    [SerializeField] private int fireRate, bulletCount, accuracy, energyConsumption, range;
     public float damage;
     private float elapsedTime;
+    private float inaccuracyRatio = 0.125f;
     private int damageLevel = 1;
     private Vector3 trailEnd;
 
@@ -24,6 +26,7 @@ public class PlayerWeaponGun : PlayerPartsFoundation
     {
         elapsedTime += Time.deltaTime;
     }
+    //銃は枠1234どれでもよいのでそのままreturn
     public override int GetEquipSlotNumber(int slotNumber)
     {
         return slotNumber;
@@ -46,38 +49,44 @@ public class PlayerWeaponGun : PlayerPartsFoundation
         //連射確認
         if(elapsedTime > (float)1/fireRate)
         {
-            //画面中央に向かってレイ
-            elapsedTime = 0;
-            VFXManager.SharedInstance.PlayVFX($"GunBulletStart{damageLevel}", muzzle.position, muzzle.rotation);
-            Ray ray = Camera.main.ViewportPointToRay(new Vector2(0.5f,0.5f));
-            RaycastHit hit;
-
-            //射程内の何かに当たったら
-            if(Physics.Raycast(ray, out hit,range))
+            for (int i = 0; i < bulletCount; i++)
             {
-                //当たったところでレイを止め、エフェクトを出す
-                trailEnd = hit.point;
-                SEManager.SharedInstance.PlaySE("GunHit", trailEnd);
-                VFXManager.SharedInstance.PlayVFX($"GunBulletEnd{damageLevel}", trailEnd, Quaternion.identity);
-                
-                //HPのある物に当たったらダメージを与える、みたいなのを書く
-                if (hit.transform.TryGetComponent(out BoxCollider boxCollider))
+                int isMoreThanZero = i > 0 ? 1 : 0;
+                //画面中央に向かってレイ、二個目以降の弾丸は集弾性補正がかかる
+                //集弾性最低の場合、画面の幅1/4ぐらいの半径でブレる
+                elapsedTime = 0;
+                VFXManager.SharedInstance.PlayVFX($"GunBulletStart{damageLevel}", muzzle.position, muzzle.rotation);
+                Ray ray = Camera.main.ViewportPointToRay(new Vector2(0.5f + isMoreThanZero * Random.Range(-inaccuracyRatio, inaccuracyRatio),
+                                                                     0.5f + isMoreThanZero * Random.Range(-inaccuracyRatio, inaccuracyRatio) * (Screen.width/Screen.height)));
+                RaycastHit hit;
+
+                //射程内の何かに当たったら
+                if (Physics.Raycast(ray, out hit, range))
                 {
-                    
+                    //当たったところでレイを止め、エフェクトを出す
+                    trailEnd = hit.point;
+                    SEManager.SharedInstance.PlaySE("GunHit", trailEnd);
+                    VFXManager.SharedInstance.PlayVFX($"GunBulletEnd{damageLevel}", trailEnd, Quaternion.identity);
+
+                    //HPのある物に当たったらダメージを与える、みたいなのを書く
+                    if (hit.transform.TryGetComponent(out BoxCollider boxCollider))
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
                 }
+                //当たらなかったら射程最大で終了する
                 else
                 {
-
+                    trailEnd = Camera.main.transform.position + ray.direction * range;
                 }
-            }
-            //当たらなかったら射程最大で終了する
-            else
-            {
-                trailEnd = Camera.main.transform.position + Camera.main.transform.forward * range;
+                VFXManager.SharedInstance.PlayLineRenderer($"GunBulletTrail{damageLevel}", new Vector3[2] { muzzle.position, trailEnd }, 0.1f);
             }
             //銃声エフェクト、弾丸エフェクト
             SEManager.SharedInstance.PlaySE("GunFire",muzzle.position);
-            VFXManager.SharedInstance.PlayLineRenderer($"GunBulletTrail{damageLevel}",new Vector3[2]{muzzle.position,trailEnd},0.1f);
         }
     }
 }

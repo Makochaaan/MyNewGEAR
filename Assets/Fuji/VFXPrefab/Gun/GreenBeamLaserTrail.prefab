@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3353512073582568144}
   - component: {fileID: 3353512073575190040}
+  - component: {fileID: 9195537218987321220}
   m_Layer: 0
   m_Name: GreenBeamLaserTrail
   m_TagString: Untagged
@@ -140,3 +141,16 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &9195537218987321220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3353512073582085734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e91d3f6bc63575342afc068fc545cd05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.1
