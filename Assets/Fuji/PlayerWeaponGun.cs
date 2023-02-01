@@ -6,8 +6,8 @@ public class PlayerWeaponGun : PlayerPartsFoundation
 {
     private Transform muzzle;
     //連射速度、一発あたりの弾数、二個目以降の集弾性、燃費、射程
-    [SerializeField] private int fireRate, bulletCount, accuracy, energyConsumption, range;
-    public float damage;
+    [SerializeField] private int fireRate, bulletCount, energyConsumption, range;
+    public float damage, accuracy;
     private float elapsedTime;
     private float inaccuracyRatio = 0.125f;
     private int damageLevel = 1;
@@ -53,11 +53,11 @@ public class PlayerWeaponGun : PlayerPartsFoundation
             {
                 int isMoreThanZero = i > 0 ? 1 : 0;
                 //画面中央に向かってレイ、二個目以降の弾丸は集弾性補正がかかる
-                //集弾性最低の場合、画面の幅1/4ぐらいの半径でブレる
+                //集弾性最低の場合、画面の幅1/8ぐらいの半径でブレる
                 elapsedTime = 0;
                 VFXManager.SharedInstance.PlayVFX($"GunBulletStart{damageLevel}", muzzle.position, muzzle.rotation);
-                Ray ray = Camera.main.ViewportPointToRay(new Vector2(0.5f + isMoreThanZero * Random.Range(-inaccuracyRatio, inaccuracyRatio),
-                                                                     0.5f + isMoreThanZero * Random.Range(-inaccuracyRatio, inaccuracyRatio) * (Screen.width/Screen.height)));
+                Ray ray = Camera.main.ViewportPointToRay(new Vector2(0.5f + isMoreThanZero * Mathf.Max(0, 1 - accuracy) * Random.Range(-inaccuracyRatio, inaccuracyRatio),
+                                                                     0.5f + isMoreThanZero * Mathf.Max(0, 1 - accuracy) * Random.Range(-inaccuracyRatio, inaccuracyRatio) * ((float)Screen.width / (float)Screen.height)));
                 RaycastHit hit;
 
                 //射程内の何かに当たったら
@@ -83,9 +83,10 @@ public class PlayerWeaponGun : PlayerPartsFoundation
                 {
                     trailEnd = Camera.main.transform.position + ray.direction * range;
                 }
+                //弾丸エフェクト
                 VFXManager.SharedInstance.PlayLineRenderer($"GunBulletTrail{damageLevel}", new Vector3[2] { muzzle.position, trailEnd }, 0.1f);
             }
-            //銃声エフェクト、弾丸エフェクト
+            //銃声エフェクト
             SEManager.SharedInstance.PlaySE("GunFire",muzzle.position);
         }
     }
