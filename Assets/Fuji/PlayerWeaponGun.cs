@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerWeaponGun : PlayerPartsFoundation
 {
+#if UNITY_EDITOR
+    [CustomEditor(typeof(PlayerPartsFoundation))]
+#endif
     private Transform muzzle;
     //連射速度、一発あたりの弾数、二個目以降の集弾性、燃費、射程
     [SerializeField] private int fireRate, bulletCount, energyConsumption, range;
@@ -32,17 +36,11 @@ public class PlayerWeaponGun : PlayerPartsFoundation
         return slotNumber;
     }
     //枠レベルを引数に銃の初期化処理
-    public override void OnEquipped(Transform slotTransform, int slotLevel)
+    public override void OnEquipped(int slotLevel)
     {
-        base.OnEquipped(slotTransform, slotLevel);
+        base.OnEquipped(slotLevel);
         damageLevel = slotLevel <= 6 ? slotLevel : 6;
         damage *= Mathf.Pow(1.15f, damageLevel - 1);
-        OnActivated();
-    }
-    public override void OnActivated()
-    {
-        base.OnActivated();
-        isActive = true;
     }
     public override void Use()
     {

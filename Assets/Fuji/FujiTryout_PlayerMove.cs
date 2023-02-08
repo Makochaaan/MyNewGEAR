@@ -34,7 +34,6 @@ public class FujiTryout_PlayerMove : MonoBehaviour
     void Update()
     {
         Vector3 destination = transform.position;
-        /*
         if (inputActions.Game.Jump.ReadValue<float>() == 1)
         {
             myRb.AddForce(Physics.gravity * -0.2f, ForceMode.Force);
@@ -59,12 +58,14 @@ public class FujiTryout_PlayerMove : MonoBehaviour
             destination += inputDirectionBasedOnCamera * moveSpeed * boostMultTemp * Time.deltaTime;
         }
         myRb.MovePosition(destination);
-        */
+        
+        /*
         inputDirectionRaw = inputActions.Game.Move.ReadValue<Vector2>();
         if (inputDirectionRaw.magnitude > 0.2f)
         {
             destination += new Vector3(inputDirectionRaw.x, 0, inputDirectionRaw.y) * moveSpeed * boostMultTemp * Time.deltaTime;
         }
         myRb.MovePosition(destination);
+        */
     }
 }

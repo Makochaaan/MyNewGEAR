@@ -24,13 +24,16 @@ namespace Michsky.UI.Shift
 
         void OnEnable()
         {
-            if(GameObject.Find("UIAudioSource").TryGetComponent(out AudioSource audioSource))
+            if (audioObject == null)
             {
-                audioObject = audioSource;
-            }
-            else
-            {
-                Debug.LogError("UIAudioSource not found");
+                if (GameObject.Find("UIAudioSource").TryGetComponent(out AudioSource audioSource))
+                {
+                    audioObject = audioSource;
+                }
+                else
+                {
+                    Debug.LogError("UIAudioSource not found");
+                }
             }
             if (UIManagerAsset == null)
             {
