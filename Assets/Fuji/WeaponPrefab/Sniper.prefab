@@ -167,11 +167,11 @@ MonoBehaviour:
   activateOnEquip: 1
   slotIcon: {fileID: 21300000, guid: c01f4d67d98ef5c499ebd8818549c615, type: 3}
   weight: 0
+  damage: 100
   fireRate: 1
   bulletCount: 1
   energyConsumption: 0
   range: 300
-  damage: 10
   accuracy: 0
 --- !u!1 &9021718462222116714
 GameObject:

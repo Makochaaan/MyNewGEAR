@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_OuerWall
+  m_Name: Shader Graphs_OuterWall
   m_Shader: {fileID: -6465566751694194690, guid: 5775f1723e5acbc4393a67b99e4e0b0c,
     type: 3}
   m_ValidKeywords: []

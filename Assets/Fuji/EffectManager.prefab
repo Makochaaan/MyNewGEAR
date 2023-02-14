@@ -1,0 +1,339 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6899492793410071992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6899492793410069062}
+  - component: {fileID: 6899492793410069063}
+  - component: {fileID: 6899492793410069059}
+  - component: {fileID: 6899492793410069060}
+  - component: {fileID: 6899492793410069061}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6899492793410069062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899492793410071992}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6899492793410069063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899492793410071992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a38eaac221f6647aefea547cfc6154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxsToPool:
+  - name: GunBulletStart1
+    vfxToPool: {fileID: 7399530921022375125, guid: 68c25f739f0f2654895378701004a81d,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletTrail1
+    vfxToPool: {fileID: 458094278870938761, guid: 62fcc0c50fc74f94ea0debaf491e617e,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletEnd1
+    vfxToPool: {fileID: 1286865245532909757, guid: b5c9ea7c03f27844dad0049d3990b401,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletStart2
+    vfxToPool: {fileID: 4423567744243779611, guid: 8ae8a0f23a93d134db30b803cb2efeac,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletTrail2
+    vfxToPool: {fileID: 6336506548955280821, guid: 6c517811c5b1f034a902d63d20773407,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletEnd2
+    vfxToPool: {fileID: 6830362581883367299, guid: eebdae2157d72f341b5e09fb57e9731c,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletStart3
+    vfxToPool: {fileID: 4407002627850619606, guid: fd4e2e60446ec914e9869aa0ccdee2f7,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletTrail3
+    vfxToPool: {fileID: 3353512073582085734, guid: 2bb1d528f76c9f04ca64a5bf4603d359,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletEnd3
+    vfxToPool: {fileID: 8782134088190371687, guid: 243410da1c65fd847aff85847bb382da,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletStart4
+    vfxToPool: {fileID: 7037520099482714568, guid: 48500126f53628f4eb2af2212dc831ca,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletTrail4
+    vfxToPool: {fileID: 207026908661841775, guid: 1b30976764c60b247bd93a7ca3cb5d5b,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletEnd4
+    vfxToPool: {fileID: 2914262739634876575, guid: 1ba68e8c565dd2548b8677724d3b33d8,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletStart5
+    vfxToPool: {fileID: 1727127940973582314, guid: aa0e2740d139c1e4aa7326f6422ff307,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletTrail5
+    vfxToPool: {fileID: 3561854031749967289, guid: d31241bf4b9a6e34794f5fb5a38e1f1c,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletEnd5
+    vfxToPool: {fileID: 6612670000522664469, guid: 58bba62a1b0d07a42afef170208de946,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletStart6
+    vfxToPool: {fileID: 7417772063354212727, guid: 5391133eccac39949bf58a8c1ebbc20a,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletTrail6
+    vfxToPool: {fileID: 6815912908155967913, guid: e5841415172903449b13e70dd490f799,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunBulletEnd6
+    vfxToPool: {fileID: 5649749728910367945, guid: 363d422a718215f4a81b93415c776c99,
+      type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: Equip1
+    vfxToPool: {fileID: 5384695047437809085, guid: a67203d944824eb418ead5b746652f52,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Equip2
+    vfxToPool: {fileID: 226908320191280645, guid: fe33d2a1e2abaad47b38ee36b659673d,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Equip3
+    vfxToPool: {fileID: 201551440396443432, guid: 4d64823dde7c1754bb6010d8de4f828b,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Equip4
+    vfxToPool: {fileID: 7027090343881987417, guid: c961f0c1e4e7e1e4ebef27df8f5428b9,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Equip5
+    vfxToPool: {fileID: 30066731211364762, guid: 168918f2fc9765643ac0f78c0c3b90ec,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Equip6
+    vfxToPool: {fileID: 8484078501194211412, guid: 3323b6b4b7d871748adc50b0826c8b29,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Release1
+    vfxToPool: {fileID: 2232650857803552300, guid: 1e9fbb0fbb9fb5348938e8a1e70b2f1b,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Release2
+    vfxToPool: {fileID: 143399042846914614, guid: ce14adea22eac8d4baacacf9c6ec6237,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Release3
+    vfxToPool: {fileID: 1469455406419076432, guid: 6b4a6b1ccc0e90945b44f901a59ea83c,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Release4
+    vfxToPool: {fileID: 3377684738927704966, guid: 99cd7448880434548bd9118165463ffa,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Release5
+    vfxToPool: {fileID: 6177197650081877348, guid: 0c50ac6014d5b294e9ab26701b24ac4c,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+  - name: Release6
+    vfxToPool: {fileID: 27943731331589516, guid: db7820c06b59c524d9ee7cd54e8c14a4,
+      type: 3}
+    initialPool: 1
+    expandAllowed: 1
+--- !u!114 &6899492793410069059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899492793410071992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05decb2b696c2b74c968ccf3093a1192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sesToPool:
+  - name: GunFire
+    seToPool: {fileID: 8300000, guid: 66362109d38707e41966aad33585e4bc, type: 3}
+    initialPool: 3
+    expandAllowed: 1
+  - name: GunHit
+    seToPool: {fileID: 8300000, guid: 723191daa845c6f4fa0979dbba60cfc4, type: 3}
+    initialPool: 3
+    expandAllowed: 1
+--- !u!114 &6899492793410069060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899492793410071992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a37f82271d55e47b520c21484bf811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmSlider: {fileID: 0}
+  seSlider: {fileID: 0}
+  filePath: 
+  saveData:
+    bgmVolume: 0
+    seVolume: 0
+    stageStatuses: []
+  init:
+  - isCleared: 0
+    clearTime: 999
+--- !u!82 &6899492793410069061
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899492793410071992}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 7ac1670904bb1624b87dc52bc71f00bc, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

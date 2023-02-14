@@ -36,7 +36,7 @@ public class VFXManager : MonoBehaviour
         }
     }
     //プールの中で非アクティブのやつを見つける、無ければ拡張
-    public GameObject GetPooledObject(string name)
+    private GameObject GetPooledObject(string name)
     {
         for (int i = 0; i < pooledVFXs.Count; i++)
         {
@@ -61,6 +61,12 @@ public class VFXManager : MonoBehaviour
         }
         return null;
     }
+    /// <summary>
+    /// エフェクト発生関数。
+    /// </summary>
+    /// <param name="name">ObjectPoolVFXクラスに登録してあるエフェクトの名前。</param>
+    /// <param name="position">発生させる場所</param>
+    /// <param name="rotation">発生させる向き</param>
     public void PlayVFX(string name, Vector3 position, Quaternion rotation)
     {
         //指定した名前のエフェクトをget
@@ -87,6 +93,12 @@ public class VFXManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         vfx.SetActive(false);
     }
+    /// <summary>
+    /// LineRendererのエフェクト発生関数。
+    /// </summary>
+    /// <param name="name">ObjectPoolVFXクラスに登録してあるエフェクトの名前</param>
+    /// <param name="points">線で結ぶ全ての位置。配列の順につなげる</param>
+    /// <param name="duration">エフェクト持続時間</param>
     public void PlayLineRenderer(string name, Vector3[] points,float duration)
     {
         GameObject vfx = GetPooledObject(name);

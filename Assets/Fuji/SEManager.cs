@@ -45,7 +45,7 @@ public class SEManager : MonoBehaviour
         }
     }
     //プールの中で非アクティブのやつを見つける、無ければ拡張
-    public GameObject GetPooledObject(string name)
+    private GameObject GetPooledObject(string name)
     {
         for (int i = 0; i < pooledSEs.Count; i++)
         {
@@ -76,6 +76,11 @@ public class SEManager : MonoBehaviour
     }
 
     //非ループSEを出す
+    /// <summary>
+    /// SE再生関数。
+    /// </summary>
+    /// <param name="name">ObjectPoolSEクラスに登録してあるSEの名前</param>
+    /// <param name="position">SEの発生する場所</param>
     public void PlaySE(string name,Vector3 position)
     {
         GameObject se = GetPooledObject(name);

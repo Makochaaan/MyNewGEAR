@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Michsky.UI.Shift;
-using System.Runtime.CompilerServices;
 
 public class PlayerUI : MonoBehaviour
 {
+    [SerializeField] private Canvas UICanvas;
     [SerializeField] private UIManager UIManagerAsset;
     [SerializeField] private Image[] slots;
     [SerializeField] private Sprite activeSlotBackground, inactiveSlotBackground;
@@ -15,9 +15,13 @@ public class PlayerUI : MonoBehaviour
     private TextMeshProUGUI[] slotLevelTexts;
     private Image[] slotIcons;
 
-
     // Start is called before the first frame update
     void Start()
+    {
+        UICanvas = GameObject.Find("PlayerUICanvas").GetComponent<Canvas>();
+        InitializeSlotUI();
+    }
+    private void InitializeSlotUI()
     {
         slotFrames = new Image[slots.Length];
         slotLevelTexts = new TextMeshProUGUI[slots.Length];
@@ -37,11 +41,7 @@ public class PlayerUI : MonoBehaviour
         ActiveStateChangeUI(4, false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
     //PartsManagerÇ©ÇÁÇÕ0î‘(ì™)Ç∆5î‘(ãr)Ç™ëóÇÁÇÍÇÈÇ±Ç∆Ç‡Ç†ÇÈÇÃÇ≈UIï\é¶ÇµÇƒÇ¢Ç»Ç¢ÇªÇÍÇÁÇÕÇ±Ç±Ç≈íeÇ≠
     //Ç±ÇÃÇ≠ÇæÇËÇPartsManagerÇ…èëÇ≠Ç∆éGëΩÇ…Ç»ÇÈÇ∆îªífÇµÇΩ
     private bool IsVaildSlotNumber(int slotNumber)
@@ -82,4 +82,6 @@ public class PlayerUI : MonoBehaviour
             slotLevelTexts[GetSlotNumberForUI(slotNumber)].text = $"Lv.{slotLevel}";
         }
     }
+
+
 }

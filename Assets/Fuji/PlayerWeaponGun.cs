@@ -10,8 +10,8 @@ public class PlayerWeaponGun : PlayerPartsFoundation
 #endif
     private Transform muzzle;
     //連射速度、一発あたりの弾数、二個目以降の集弾性、燃費、射程
-    [SerializeField] private int fireRate, bulletCount, energyConsumption, range;
-    public float damage, accuracy;
+    [SerializeField] private int damage, fireRate, bulletCount, energyConsumption, range;
+    public float accuracy;
     private float elapsedTime;
     private float inaccuracyRatio = 0.125f;
     private int damageLevel = 1;
@@ -40,13 +40,14 @@ public class PlayerWeaponGun : PlayerPartsFoundation
     {
         base.OnEquipped(slotLevel);
         damageLevel = slotLevel <= 6 ? slotLevel : 6;
-        damage *= Mathf.Pow(1.15f, damageLevel - 1);
+        damage = (int)(damage * Mathf.Pow(1.15f, damageLevel - 1));
     }
     public override void Use()
     {
         //連射確認
         if(elapsedTime > (float)1/fireRate)
         {
+            PlayerUI playerUI = transform.root.GetComponent<PlayerUI>();
             for (int i = 0; i < bulletCount; i++)
             {
                 int isMoreThanZero = i > 0 ? 1 : 0;
@@ -66,14 +67,10 @@ public class PlayerWeaponGun : PlayerPartsFoundation
                     SEManager.SharedInstance.PlaySE("GunHit", trailEnd);
                     VFXManager.SharedInstance.PlayVFX($"GunBulletEnd{damageLevel}", trailEnd, Quaternion.identity);
 
-                    //HPのある物に当たったらダメージを与える、みたいなのを書く
-                    if (hit.transform.TryGetComponent(out BoxCollider boxCollider))
+                    //HPのある物に当たったらダメージを与える
+                    if (hit.transform.TryGetComponent(out HPFoundation hpScript))
                     {
-
-                    }
-                    else
-                    {
-
+                        hpScript.Damage(damage,trailEnd);
                     }
                 }
                 //当たらなかったら射程最大で終了する
