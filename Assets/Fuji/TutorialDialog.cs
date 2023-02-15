@@ -11,7 +11,7 @@ public class TutorialDialog : MonoBehaviour
     [SerializeField] private float time;
     private RectTransform dialogBackground,dialogFrame;
     private TextMeshProUGUI dialogText;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,23 +25,21 @@ public class TutorialDialog : MonoBehaviour
     {
         if(other.gameObject.name == "Player")
         {
-            dialogBackground.DOSizeDelta(new Vector2(400,200), time).SetEase(Ease.OutQuint);
-            dialogFrame.DOSizeDelta(new Vector2(400, 200), time).SetEase(Ease.OutQuint);
-            StartCoroutine(SetDialogText(myDialog, time));
+            var openSequence = DOTween.Sequence();
+            dialogText.text = myDialog;
+            openSequence.Append(dialogBackground.DOSizeDelta(new Vector2(400, 200), time).SetEase(Ease.OutQuint))
+                        .Join(dialogFrame.DOSizeDelta(new Vector2(400, 200), time).SetEase(Ease.OutQuint))
+                        .Append(dialogText.DOFade(1, time));
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.name == "Player")
         {
-            dialogBackground.DOSizeDelta(Vector2.zero, time).SetEase(Ease.OutQuint);
-            dialogFrame.DOSizeDelta(Vector2.zero, time).SetEase(Ease.OutQuint);
-            StartCoroutine(SetDialogText("", 0));
+            var closeSequence = DOTween.Sequence();
+            closeSequence.Append(dialogText.DOFade(0, time))
+                         .Append(dialogBackground.DOSizeDelta(Vector2.zero, time).SetEase(Ease.OutQuint))
+                         .Join(dialogFrame.DOSizeDelta(Vector2.zero, time).SetEase(Ease.OutQuint));
         }
-    }
-    private IEnumerator SetDialogText(string text,float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        dialogText.text = text;
     }
 }

@@ -33,14 +33,22 @@ public class FujiTryout_PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         Vector3 destination = transform.position;
+
         if (inputActions.Game.Jump.ReadValue<float>() == 1)
         {
             myRb.AddForce(Physics.gravity * -0.2f, ForceMode.Force);
             destination += Vector3.up * jumpPower * Time.deltaTime;   
         }
-        
-        if(inputActions.Game.Boost.ReadValue<float>() == 1)
+        //“ü—ÍB“ü—Í‚ª‚È‚¢ê‡‚±‚êˆÈ~‚Ìˆ—‚ÍˆÓ–¡‚ª‚È‚¢‚Ì‚Åreturn
+        inputDirectionRaw = inputActions.Game.Move.ReadValue<Vector2>();
+        if (inputDirectionRaw.magnitude == 0)
+        {
+            destination = transform.position;
+            return;
+        }
+        if (inputActions.Game.Boost.ReadValue<float>() == 1)
         {
             boostMultTemp = boostMult;
         }
@@ -49,17 +57,17 @@ public class FujiTryout_PlayerMove : MonoBehaviour
             boostMultTemp = 1;
         }
         //ƒJƒƒ‰Šî€‚Ì©‹@ˆÚ“®
-        inputDirectionRaw = inputActions.Game.Move.ReadValue<Vector2>();
-        inputDirectionBasedOnCamera = (mainCam.right * inputDirectionRaw.x) + (new Vector3(mainCam.forward.x, 0, mainCam.forward.z) * inputDirectionRaw.y);
-
+        //inputDirectionBasedOnCamera = (mainCam.right * inputDirectionRaw.x) + (new Vector3(mainCam.forward.x, 0, mainCam.forward.z) * inputDirectionRaw.y);
+        inputDirectionBasedOnCamera = ((mainCam.right * inputDirectionRaw.x) + (Vector3.Scale(mainCam.forward,new Vector3(1,0,1)) * inputDirectionRaw.y)).normalized;
         if (inputDirectionRaw.magnitude > 0.2f)
         {
-            transform.LookAt(Vector3.Lerp(transform.position + transform.forward.normalized, transform.position + inputDirectionBasedOnCamera.normalized, 5*Time.deltaTime), Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(inputDirectionBasedOnCamera, Vector3.up), 360 * Time.deltaTime);
+            //transform.LookAt(Vector3.Lerp(transform.position + transform.forward, transform.position + inputDirectionBasedOnCamera, 0.5f));
             destination += inputDirectionBasedOnCamera * moveSpeed * boostMultTemp * Time.deltaTime;
         }
         myRb.MovePosition(destination);
-        
         /*
+        
         inputDirectionRaw = inputActions.Game.Move.ReadValue<Vector2>();
         if (inputDirectionRaw.magnitude > 0.2f)
         {
