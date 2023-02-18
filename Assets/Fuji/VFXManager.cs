@@ -29,6 +29,7 @@ public class VFXManager : MonoBehaviour
             for (int i = 0; i < item.initialPool; i++)
             {
                 GameObject obj = Instantiate(item.vfxToPool);
+                obj.transform.SetParent(transform, true);
                 obj.name = item.name;
                 obj.SetActive(false);
                 pooledVFXs.Add(obj);
@@ -52,6 +53,7 @@ public class VFXManager : MonoBehaviour
                 if (item.expandAllowed)
                 {
                     GameObject obj = Instantiate(item.vfxToPool);
+                    obj.transform.SetParent(transform, true);
                     obj.name = item.name;
                     obj.SetActive(false);
                     pooledVFXs.Add(obj);

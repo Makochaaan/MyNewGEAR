@@ -11,6 +11,8 @@ public class TutorialDialog : MonoBehaviour
     [SerializeField] private float time;
     private RectTransform dialogBackground,dialogFrame;
     private TextMeshProUGUI dialogText;
+    //共用のアニメーション
+    private static Sequence openSequence, closeSequence;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +27,9 @@ public class TutorialDialog : MonoBehaviour
     {
         if(other.gameObject.name == "Player")
         {
-            var openSequence = DOTween.Sequence();
+            openSequence = DOTween.Sequence();
+            //閉じるアニメーションを必ず終了してから開くアニメーション
+            closeSequence.Complete();
             dialogText.text = myDialog;
             openSequence.Append(dialogBackground.DOSizeDelta(new Vector2(400, 200), time).SetEase(Ease.OutQuint))
                         .Join(dialogFrame.DOSizeDelta(new Vector2(400, 200), time).SetEase(Ease.OutQuint))
@@ -36,10 +40,14 @@ public class TutorialDialog : MonoBehaviour
     {
         if (other.gameObject.name == "Player")
         {
-            var closeSequence = DOTween.Sequence();
+            closeSequence = DOTween.Sequence();
+            //開くアニメーションを必ず終了してから閉じるアニメーション
+            openSequence.Complete();
             closeSequence.Append(dialogText.DOFade(0, time))
                          .Append(dialogBackground.DOSizeDelta(Vector2.zero, time).SetEase(Ease.OutQuint))
                          .Join(dialogFrame.DOSizeDelta(Vector2.zero, time).SetEase(Ease.OutQuint));
+            
+            //closeSequence.Restart();
         }
     }
 }

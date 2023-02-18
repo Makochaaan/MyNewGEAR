@@ -34,6 +34,7 @@ public class SEManager : MonoBehaviour
             for (int i = 0; i < item.initialPool; i++)
             {
                 GameObject obj = new GameObject(item.name);
+                obj.transform.SetParent(transform, true);
                 AudioSource audioSource = obj.AddComponent<AudioSource>();
                 audioSource.clip = item.seToPool;
                 audioSource.volume = soundPrefs.saveData.seVolume;
@@ -61,6 +62,7 @@ public class SEManager : MonoBehaviour
                 if (item.expandAllowed)
                 {
                     GameObject obj = new GameObject(item.name);
+                    obj.transform.SetParent(transform, true);
                     AudioSource audioSource = obj.AddComponent<AudioSource>();
                     audioSource.clip = item.seToPool;
                     audioSource.volume = soundPrefs.saveData.seVolume;

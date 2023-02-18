@@ -33,21 +33,28 @@ public class FujiTryout_PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         Vector3 destination = transform.position;
-
         if (inputActions.Game.Jump.ReadValue<float>() == 1)
         {
-            myRb.AddForce(Physics.gravity * -0.2f, ForceMode.Force);
-            destination += Vector3.up * jumpPower * Time.deltaTime;   
+            destination += Vector3.up * jumpPower * Time.deltaTime;
         }
+
+        //ダッシュ、ジャンプ中は重力無効
+        myRb.useGravity = (inputActions.Game.Jump.ReadValue<float>() == 1 || inputActions.Game.Boost.ReadValue<float>() == 1) ? false : true;
+
         //入力。入力がない場合これ以降の処理は意味がないのでreturn
         inputDirectionRaw = inputActions.Game.Move.ReadValue<Vector2>();
-        if (inputDirectionRaw.magnitude == 0)
+        if (!(inputDirectionRaw.magnitude != 0 || inputActions.Game.Jump.ReadValue<float>() != 0))
         {
-            destination = transform.position;
             return;
         }
+        
+        //ダッシュ、ジャンプのはじめに移動ベクトルをリセット
+        if (inputActions.Game.Jump.WasPressedThisFrame() || inputActions.Game.Boost.WasPressedThisFrame())
+        {
+            myRb.velocity = Vector3.zero;
+        }
+
         if (inputActions.Game.Boost.ReadValue<float>() == 1)
         {
             boostMultTemp = boostMult;
@@ -57,12 +64,10 @@ public class FujiTryout_PlayerMove : MonoBehaviour
             boostMultTemp = 1;
         }
         //カメラ基準の自機移動
-        //inputDirectionBasedOnCamera = (mainCam.right * inputDirectionRaw.x) + (new Vector3(mainCam.forward.x, 0, mainCam.forward.z) * inputDirectionRaw.y);
         inputDirectionBasedOnCamera = ((mainCam.right * inputDirectionRaw.x) + (Vector3.Scale(mainCam.forward,new Vector3(1,0,1)) * inputDirectionRaw.y)).normalized;
         if (inputDirectionRaw.magnitude > 0.2f)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(inputDirectionBasedOnCamera, Vector3.up), 360 * Time.deltaTime);
-            //transform.LookAt(Vector3.Lerp(transform.position + transform.forward, transform.position + inputDirectionBasedOnCamera, 0.5f));
             destination += inputDirectionBasedOnCamera * moveSpeed * boostMultTemp * Time.deltaTime;
         }
         myRb.MovePosition(destination);
