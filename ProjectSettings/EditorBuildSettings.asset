@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Hiraku/GameScene.unity
     guid: 560c08459b59e1c4a905b25f01d1868e
+  - enabled: 1
+    path: Assets/Hiraku/ResultScene.unity
+    guid: 8d1c91712241578498dc8b21b9ae0720
+  - enabled: 1
+    path: Assets/naichilab/unity-simple-ranking/Scenes/Ranking.unity
+    guid: 152244f5855414ac4a3874f14efa583c
   m_configObjects: {}
