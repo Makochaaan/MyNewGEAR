@@ -1,39 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+ 
 public class CameraControll : MonoBehaviour
 {
-    private GameObject mainCamera;              //メインカメラ格納用
-    private GameObject playerObject;            //回転の中心となるプレイヤー格納用
-    public float rotateSpeed = 2.0f;            //回転の速さ
+    [SerializeField, Tooltip("unitychan")]
+    private GameObject TargetObject;
+    private Camera cam;
+    private Vector3 startPos;
+    private Vector3 startAngle;
+
+    private Vector3 lastTargetPosition;
  
-    //呼び出し時に実行される関数
+    // Start is called before the first frame update
     void Start()
     {
-        //メインカメラとユニティちゃんをそれぞれ取得
-        mainCamera = Camera.main.gameObject;
-        playerObject = GameObject.Find("unitychan");
+        cam = GetComponent<Camera>();
     }
  
- 
-    //単位時間ごとに実行される関数
+    // Update is called once per frame
     void Update()
     {
-        //rotateCameraの呼び出し
-        rotateCamera();
-    }
- 
-    //カメラを回転させる関数
-    private void rotateCamera()
-    {
-        //Vector3でX,Y方向の回転の度合いを定義
-        Vector3 angle = new Vector3(Input.GetAxis("Mouse X") * rotateSpeed,Input.GetAxis("Mouse Y") * rotateSpeed, 0);
- 
-        //transform.RotateAround()をしようしてメインカメラを回転させる
-        if (Input.GetMouseButton(1)!=true) {
-        mainCamera.transform.RotateAround(playerObject.transform.position, Vector3.up, angle.x);
-        mainCamera.transform.RotateAround(playerObject.transform.position, transform.right, angle.y);
+        if (cam == null)
+        {
+            return;
         }
+ 
+        float sensitiveMove = 0.8f;
+        float sensitiveRotate = 5.0f;
+        float sensitiveZoom = 10.0f;
+
+        // rotate camera
+        float rotateX = Input.GetAxis("Mouse X") * sensitiveRotate;
+    
+        cam.transform.RotateAround (TargetObject.transform.position, Vector3.up, rotateX);
+
+        cam.transform.position += TargetObject.transform.position - lastTargetPosition;
+        lastTargetPosition = TargetObject.transform.position;
+        
+        // cam.transform.Rotate(0, rotateX, 0.0f);   
     }
+        
 }
