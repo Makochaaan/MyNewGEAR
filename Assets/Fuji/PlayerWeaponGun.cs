@@ -65,7 +65,8 @@ public class PlayerWeaponGun : PlayerPartsFoundation
                     //当たったところでレイを止め、エフェクトを出す
                     trailEnd = hit.point;
                     SEManager.SharedInstance.PlaySE("GunHit", trailEnd);
-                    VFXManager.SharedInstance.PlayVFX($"GunBulletEnd{damageLevel}", trailEnd, Quaternion.identity);
+                    //当たったところより少しプレイヤー側にするとライトが見えやすい
+                    VFXManager.SharedInstance.PlayVFX($"GunBulletEnd{damageLevel}", trailEnd + (Camera.main.transform.position - trailEnd).normalized, Quaternion.identity);
 
                     //HPのある物に当たったらダメージを与える
                     if (hit.transform.TryGetComponent(out HPFoundation hpScript))

@@ -26,7 +26,7 @@ public class HPFoundation : MonoBehaviour
             OnHPZero();
         }
     }
-    public virtual void OnHPZero()
+    protected virtual void OnHPZero()
     {
         Debug.Log("hp zero from base class");
     }
