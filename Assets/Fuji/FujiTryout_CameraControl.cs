@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class FujiTryout_CameraControl : MonoBehaviour
 {
     private Debug_Player inputActions;
-    [SerializeField] private Vector3 initialCameraOffset;
     [SerializeField] private float cameraRotH;
     [SerializeField] private float cameraRotV;
     private Vector2 mouseDelta;

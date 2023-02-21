@@ -58,5 +58,14 @@ public class FujiTryout_PlayerMove : MonoBehaviour
             destination += inputDirectionBasedOnCamera * moveSpeed * boostMultTemp * Time.deltaTime;
         }
         myRb.MovePosition(destination);
+        
+        /*
+        inputDirectionRaw = inputActions.Game.Move.ReadValue<Vector2>();
+        if (inputDirectionRaw.magnitude > 0.2f)
+        {
+            destination += new Vector3(inputDirectionRaw.x, 0, inputDirectionRaw.y) * moveSpeed * boostMultTemp * Time.deltaTime;
+        }
+        myRb.MovePosition(destination);
+        */
     }
 }

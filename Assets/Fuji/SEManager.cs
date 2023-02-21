@@ -1,46 +1,101 @@
 using UnityEngine;
 using System;
-using UnityEngine.Audio;
+using System.Collections.Generic;
+using UnityEngine.Rendering.Universal;
+using System.Collections;
 
 [RequireComponent(typeof(SoundPrefs))]
+[System.Serializable]
+public class ObjectPoolSE
+{
+    public string name;
+    public AudioClip seToPool;
+    public int initialPool;
+    public bool expandAllowed = true;
+}
 public class SEManager : MonoBehaviour
 {
-    [SerializeField] private SEClass[] soundEffects;
+    public static SEManager SharedInstance;
     private SoundPrefs soundPrefs;
 
     private void Awake()
     {
         soundPrefs = GetComponent<SoundPrefs>();
+        SharedInstance = this;
     }
+    public List<ObjectPoolSE> sesToPool;
+    private List<GameObject> pooledSEs;
+    private void Start()
+    {
+        //初期プールの作成
+        pooledSEs = new List<GameObject>();
+        foreach (ObjectPoolSE item in sesToPool)
+        {
+            for (int i = 0; i < item.initialPool; i++)
+            {
+                GameObject obj = new GameObject(item.name);
+                AudioSource audioSource = obj.AddComponent<AudioSource>();
+                audioSource.clip = item.seToPool;
+                audioSource.volume = soundPrefs.saveData.seVolume;
+                audioSource.loop = false;
+                audioSource.spatialBlend = 1;
+                obj.SetActive(false);
+                pooledSEs.Add(obj);
+            }
+        }
+    }
+    //プールの中で非アクティブのやつを見つける、無ければ拡張
+    public GameObject GetPooledObject(string name)
+    {
+        for (int i = 0; i < pooledSEs.Count; i++)
+        {
+            if (!pooledSEs[i].activeInHierarchy && pooledSEs[i].name == name)
+            {
+                return pooledSEs[i];
+            }
+        }
+        foreach (ObjectPoolSE item in sesToPool)
+        {
+            if (item.name == name)
+            {
+                if (item.expandAllowed)
+                {
+                    GameObject obj = new GameObject(item.name);
+                    AudioSource audioSource = obj.AddComponent<AudioSource>();
+                    audioSource.clip = item.seToPool;
+                    audioSource.volume = soundPrefs.saveData.seVolume;
+                    audioSource.loop = false;
+                    audioSource.spatialBlend = 1;
+                    obj.SetActive(false);
+                    pooledSEs.Add(obj);
+                    return obj;
+                }
+            }
+        }
+        return null;
+    }
+
     //非ループSEを出す
     public void PlaySE(string name,Vector3 position)
     {
-        SEClass se = Array.Find(soundEffects, soundEffect => soundEffect.name == name);
+        GameObject se = GetPooledObject(name);
         if(se != null)
         {
-            AudioSource.PlayClipAtPoint(se.clip, position, soundPrefs.saveData.seVolume);
+            se.transform.position = position;
+            se.SetActive(true);
+            AudioSource audioSource = se.GetComponent<AudioSource>();
+            audioSource.PlayOneShot(audioSource.clip);
+            StartCoroutine(SEStop(audioSource.clip.length, name, se));
         }
         else
         {
             Debug.LogWarning($"SE '{name}' not found!");
+            return;
         }
     }
-    //消耗品にループSEをつける
-    public void AddSEComponent(string name, GameObject parent)
+    private IEnumerator SEStop(float delay, string name, GameObject se)
     {
-        SEClass se = Array.Find(soundEffects, soundEffect => soundEffect.name == name);
-        if (se != null)
-        {
-            AudioSource parentAS = parent.AddComponent<AudioSource>();
-            parentAS.clip = se.clip;
-            parentAS.volume = soundPrefs.saveData.seVolume;
-            parentAS.loop = true;
-            parentAS.spatialBlend = 1;
-            parentAS.Play();
-        }
-        else
-        {
-            Debug.LogWarning($"SE '{name}' not found!");
-        }
+        yield return new WaitForSeconds(delay);
+        se.SetActive(false);
     }
 }
