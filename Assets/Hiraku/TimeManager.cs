@@ -25,5 +25,8 @@ public class TimeManager : MonoBehaviour {
         TimeSpan record = new TimeSpan();
         record = TimeSpan.FromSeconds(elapsedTime);
         return record;
+        isStoped = true;
+        // ランキングの表示
+        naichilab.RankingLoader.Instance.SendScoreAndShowRanking (elapsedTime);
     }
 }
