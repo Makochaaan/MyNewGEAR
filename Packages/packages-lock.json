@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.nifcloud.mbaas.unity": {
+      "version": "https://github.com/NIFCLOUD-mbaas/ncmb_unity.git?path=ncmb_unity/Assets",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "4bef837725339df78e94c15bc08fbe37febd214c"
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

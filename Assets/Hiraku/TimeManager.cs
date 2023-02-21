@@ -37,5 +37,7 @@ public class TimeManager : MonoBehaviour {
     void TimerStop()
     {
         isStoped = true;
+        // ランキングの表示
+        naichilab.RankingLoader.Instance.SendScoreAndShowRanking (elapsedTime);
     }
 }
