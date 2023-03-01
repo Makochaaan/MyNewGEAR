@@ -18,7 +18,7 @@ public class Target : HPFoundation
         mySpawnScript.currentAlive--;
         gameObject.SetActive(false);
         VFXManager.SharedInstance.PlayVFX("TargetBreak", transform.position, Quaternion.identity);
-        SEManager.SharedInstance.PlaySE("TargetBreak", transform.position);
+        SEManager.SharedInstance.PlaySE("TargetBreak", false, transform.position);
     }
     protected override void Update()
     {

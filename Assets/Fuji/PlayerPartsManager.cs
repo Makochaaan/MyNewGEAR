@@ -8,7 +8,8 @@ using UnityEngine.UI;
 [System.Serializable]
 public class PartsSlot
 {
-    public Transform slotTransform,slotTransformTemp;
+    public Transform slotTransform;
+    [HideInInspector] public Transform slotTransformTemp;
     [HideInInspector] public int slotLevel;
     [HideInInspector] public PlayerPartsFoundation parts;
 }
@@ -17,7 +18,7 @@ public class PlayerPartsManager : MonoBehaviour
 {
     private PlayerUI myPlayerUI;
     //入力、現在レイが当たって選択中となっているもの、有効なアイテムを選択しているか、装備枠
-    private Debug_Player inputActions;
+    private GameInputs inputActions;
     private Transform selectionBefore, selectionAfter;
     private bool selecting;
     [SerializeField] private PartsSlot[] partsSlots;
@@ -36,12 +37,12 @@ public class PlayerPartsManager : MonoBehaviour
     //入力を有効化
     private void InitializeInputAction()
     {
-        inputActions = new Debug_Player();
+        inputActions = new GameInputs();
         inputActions.Enable();
-        inputActions.Game.ItemSlot1.performed += context => SlotCheck(1);
-        inputActions.Game.ItemSlot2.performed += context => SlotCheck(2);
-        inputActions.Game.ItemSlot3.performed += context => SlotCheck(3);
-        inputActions.Game.ItemSlot4.performed += context => SlotCheck(4);
+        inputActions.Player.ItemSlot1.performed += context => SlotCheck(1);
+        inputActions.Player.ItemSlot2.performed += context => SlotCheck(2);
+        inputActions.Player.ItemSlot3.performed += context => SlotCheck(3);
+        inputActions.Player.ItemSlot4.performed += context => SlotCheck(4);
     }
     //装備枠を初期化
     private void InitializePartsSlots()
@@ -60,7 +61,7 @@ public class PlayerPartsManager : MonoBehaviour
         //選択用レイをとばす
         PartsSelectRay();
         //押している間武器使用
-        if(inputActions.Game.Fire.ReadValue<float>() == 1)
+        if(inputActions.Player.Fire.ReadValue<float>() == 1)
         {
             UseActiveWeapon();
         }

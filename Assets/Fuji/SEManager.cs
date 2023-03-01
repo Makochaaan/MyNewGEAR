@@ -1,10 +1,8 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
-using UnityEngine.Rendering.Universal;
 using System.Collections;
 
-[RequireComponent(typeof(SoundPrefs))]
+[RequireComponent(typeof(SaveData))]
 [System.Serializable]
 public class ObjectPoolSE
 {
@@ -16,11 +14,10 @@ public class ObjectPoolSE
 public class SEManager : MonoBehaviour
 {
     public static SEManager SharedInstance;
-    private SoundPrefs soundPrefs;
+    [SerializeField] private SaveData saveData;
 
     private void Awake()
     {
-        soundPrefs = GetComponent<SoundPrefs>();
         SharedInstance = this;
     }
     public List<ObjectPoolSE> sesToPool;
@@ -37,7 +34,7 @@ public class SEManager : MonoBehaviour
                 obj.transform.SetParent(transform, true);
                 AudioSource audioSource = obj.AddComponent<AudioSource>();
                 audioSource.clip = item.seToPool;
-                audioSource.volume = soundPrefs.saveData.seVolume;
+                audioSource.volume = saveData.jsonProperty.seVolume;
                 audioSource.loop = false;
                 audioSource.spatialBlend = 1;
                 obj.SetActive(false);
@@ -65,9 +62,7 @@ public class SEManager : MonoBehaviour
                     obj.transform.SetParent(transform, true);
                     AudioSource audioSource = obj.AddComponent<AudioSource>();
                     audioSource.clip = item.seToPool;
-                    audioSource.volume = soundPrefs.saveData.seVolume;
                     audioSource.loop = false;
-                    audioSource.spatialBlend = 1;
                     obj.SetActive(false);
                     pooledSEs.Add(obj);
                     return obj;
@@ -82,8 +77,9 @@ public class SEManager : MonoBehaviour
     /// SE再生関数。
     /// </summary>
     /// <param name="name">ObjectPoolSEクラスに登録してあるSEの名前</param>
+    /// <param name="is3D">距離によって減衰するか</param>
     /// <param name="position">SEの発生する場所</param>
-    public void PlaySE(string name,Vector3 position)
+    public void PlaySE(string name, bool is3D, Vector3 position)
     {
         GameObject se = GetPooledObject(name);
         if(se != null)
@@ -91,6 +87,8 @@ public class SEManager : MonoBehaviour
             se.transform.position = position;
             se.SetActive(true);
             AudioSource audioSource = se.GetComponent<AudioSource>();
+            audioSource.spatialBlend = is3D ? 1 : 0;
+            audioSource.volume = saveData.jsonProperty.seVolume;
             audioSource.PlayOneShot(audioSource.clip);
             StartCoroutine(SEStop(audioSource.clip.length, name, se));
         }

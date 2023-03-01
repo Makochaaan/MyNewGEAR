@@ -5,6 +5,7 @@ using System;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent (typeof(CharacterStatus))]
 public class MoveForPlayer : MonoBehaviour
 {
     /*参考文献：http://qiita.com/yando/items/c406690c9ad87ecfc8e5
@@ -24,10 +25,12 @@ public class MoveForPlayer : MonoBehaviour
     private Vector3 moveDirection;
 
     private Rigidbody _rigidbody;
+    private CharacterStatus _characterStatus;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _characterStatus = GetComponent<CharacterStatus>();
         camTransform = Camera.main.transform;
         // Input Actionインスタンス生成
         _gameInputs = new GameInputs();
@@ -50,13 +53,19 @@ public class MoveForPlayer : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        // ジャンプする力を与える
-        _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        if (_characterStatus.currentEnergy > _characterStatus.energyConsumption * 3)
+        {
+            // ジャンプする力を与える
+            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+            _characterStatus.jumpedThisFrame = true;
+            _characterStatus.currentEnergy -= _characterStatus.energyConsumption * 3;
+        }
     }
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        dashFactorTemp = 1;
     }
 
     private void FixedUpdate()
@@ -69,10 +78,14 @@ public class MoveForPlayer : MonoBehaviour
 
         inputDirection = (camForward * v) + (camTransform.right * h);
 
-        //方向転換用Transform
-
         //方向転換
         moveDirection = new Vector3(_moveInputValue.x, 0, _moveInputValue.y).normalized;
+
+        //エネルギー回復
+        if(_characterStatus.isOnGround && dashFactorTemp == 1 && _characterStatus.currentEnergy < _characterStatus.maxEnergy)
+        {
+            _characterStatus.currentEnergy += _characterStatus.energyRecoverySpeed * Time.deltaTime;
+        }
 
         if (_moveInputValue.magnitude > 0.2f)
         {
@@ -84,12 +97,19 @@ public class MoveForPlayer : MonoBehaviour
             return;
         }
 
-        dashFactorTemp = (_gameInputs.Player.Dash.ReadValue<float>() == 1) ? dashFactor : 1;
+        dashFactorTemp = (_gameInputs.Player.Dash.ReadValue<float>() == 1　&& _characterStatus.currentEnergy > 0) ? dashFactor : 1;
 
-        _rigidbody.MovePosition(transform.position + (moveDirection * _moveSpeed * Time.deltaTime) * dashFactorTemp);
-        if (dashFactorTemp > 1 && _rigidbody.velocity.y < 0)
+        _rigidbody.MovePosition(transform.position + (moveDirection * _characterStatus.speed * Time.deltaTime) * dashFactorTemp);
+
+        //ダッシュ中にエネルギーを消費する
+        if (dashFactorTemp > 1)
         {
-            _rigidbody.AddForce(Vector3.up * -_rigidbody.velocity.y * 5 * Time.deltaTime, ForceMode.VelocityChange);
+            _characterStatus.currentEnergy -= _characterStatus.energyConsumption * Time.deltaTime;
+            //空中ダッシュは重力を軽減する
+            if (_rigidbody.velocity.y < 0)
+            {
+                _rigidbody.AddForce(Vector3.up * -_rigidbody.velocity.y * 5 * Time.deltaTime, ForceMode.VelocityChange);
+            }
         }
     }
 }

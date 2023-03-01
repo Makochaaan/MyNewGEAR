@@ -5,12 +5,8 @@ using UnityEngine.UI;
 namespace Michsky.UI.Shift
 {
     [ExecuteInEditMode]
-    public class UIElementSound : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
+    public class UIElementSound : MonoBehaviour, IPointerEnterHandler,ISelectHandler,IPointerClickHandler,ISubmitHandler
     {
-        [Header("Resources")]
-        public UIManager UIManagerAsset;
-        public AudioSource audioObject;
-
         [Header("Custom SFX")]
         public AudioClip hoverSFX;
         public AudioClip clickSFX;
@@ -24,29 +20,6 @@ namespace Michsky.UI.Shift
 
         void OnEnable()
         {
-            if (audioObject == null)
-            {
-                if (GameObject.Find("UIAudioSource").TryGetComponent(out AudioSource audioSource))
-                {
-                    audioObject = audioSource;
-                }
-                else
-                {
-                    Debug.LogError("UIAudioSource not found");
-                }
-            }
-            if (UIManagerAsset == null)
-            {
-                try { UIManagerAsset = Resources.Load<UIManager>("Shift UI Manager"); }
-                catch { Debug.Log("<b>[UI Element Sound]</b> No UI Manager found.", this); this.enabled = false; }
-            }
-
-            if (Application.isPlaying == true && audioObject == null)
-            {
-                try { audioObject = GameObject.Find("UI Audio").GetComponent<AudioSource>(); }
-                catch { Debug.Log("<b>[UI Element Sound]</b> No Audio Source found.", this); }
-            }
-
             if (checkForInteraction == true) { sourceButton = gameObject.GetComponent<Button>(); }
         }
 
@@ -57,11 +30,33 @@ namespace Michsky.UI.Shift
 
             if (enableHoverSound == true)
             {
-                if (hoverSFX == null) { audioObject.PlayOneShot(UIManagerAsset.hoverSound); }
-                else { audioObject.PlayOneShot(hoverSFX); }
+                if (hoverSFX == null)
+                {
+                    SEManager.SharedInstance.PlaySE("UIHoverDefault", false, Vector3.zero);
+                }
+                else
+                {
+                    SEManager.SharedInstance.PlaySE("UIHoverCustom", false, Vector3.zero);
+                }
             }
         }
+        public void OnSelect(BaseEventData eventData)
+        {
+            if (checkForInteraction == true && sourceButton != null && sourceButton.interactable == false)
+                return;
 
+            if (enableHoverSound == true)
+            {
+                if (hoverSFX == null)
+                {
+                    SEManager.SharedInstance.PlaySE("UIHoverDefault", false, Vector3.zero);
+                }
+                else
+                {
+                    SEManager.SharedInstance.PlaySE("UIHoverCustom", false, Vector3.zero);
+                }
+            }
+        }
         public void OnPointerClick(PointerEventData eventData)
         {
             if (checkForInteraction == true && sourceButton != null && sourceButton.interactable == false)
@@ -69,8 +64,31 @@ namespace Michsky.UI.Shift
 
             if (enableClickSound == true)
             {
-                if (clickSFX == null) { audioObject.PlayOneShot(UIManagerAsset.clickSound); }
-                else { audioObject.PlayOneShot(clickSFX); }
+                if (clickSFX == null)
+                {
+                    SEManager.SharedInstance.PlaySE("UIClickDefault", false, Vector3.zero);
+                }
+                else
+                {
+                    SEManager.SharedInstance.PlaySE("UIClickCustom", false, Vector3.zero);
+                }
+            }
+        }
+        public void OnSubmit(BaseEventData eventData)
+        {
+            if (checkForInteraction == true && sourceButton != null && sourceButton.interactable == false)
+                return;
+
+            if (enableClickSound == true)
+            {
+                if (clickSFX == null)
+                {
+                    SEManager.SharedInstance.PlaySE("UIClickDefault", false, Vector3.zero);
+                }
+                else
+                {
+                    SEManager.SharedInstance.PlaySE("UIClickCustom", false, Vector3.zero);
+                }
             }
         }
     }

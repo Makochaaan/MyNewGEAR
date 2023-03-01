@@ -15,13 +15,13 @@ public class HPFoundation : MonoBehaviour
     private Slider hpBarSlider;
     [SerializeField] private bool showHPBar;
     private float hpBarTimer;
-    
-    public virtual void Damage(int damage,Vector3 position)
+
+    public virtual void Damage(float damage, Vector3 position)
     {
-        currentHP -= damage;
-        ShowDamage(damage,position);
+        currentHP = Mathf.RoundToInt(currentHP - damage);
+        ShowDamage(Mathf.RoundToInt(damage), position);
         if (showHPBar) ShowHPBar();
-        if(currentHP <= 0)
+        if (currentHP <= 0)
         {
             OnHPZero();
         }

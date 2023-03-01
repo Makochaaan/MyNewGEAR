@@ -18,6 +18,7 @@ namespace Michsky.UI.Shift
         public bool usePercent = false;
         public bool showValue = true;
         public bool useRoundValue = false;
+        [SerializeField] private int multiplierOnDisplay = 1;
 
         Slider mainSlider;
         float saveValue;
@@ -51,17 +52,17 @@ namespace Michsky.UI.Shift
             if (useRoundValue == true)
             {
                 if (usePercent == true)
-                    valueText.text = Mathf.Round(mainSlider.value * 1.0f).ToString() + "%";
+                    valueText.text = Mathf.Round(mainSlider.value * multiplierOnDisplay).ToString() + "%";
                 else
-                    valueText.text = Mathf.Round(mainSlider.value * 1.0f).ToString();
+                    valueText.text = Mathf.Round(mainSlider.value * multiplierOnDisplay).ToString();
             }
 
             else
             {
                 if (usePercent == true)
-                    valueText.text = mainSlider.value.ToString("F1") + "%";
+                    valueText.text = (mainSlider.value * multiplierOnDisplay).ToString("F1") + "%";
                 else
-                    valueText.text = mainSlider.value.ToString("F1");
+                    valueText.text = (mainSlider.value * multiplierOnDisplay).ToString("F1");
             }
         }
     }
