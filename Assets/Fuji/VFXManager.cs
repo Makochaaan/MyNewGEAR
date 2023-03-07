@@ -22,7 +22,7 @@ public class VFXManager : MonoBehaviour
 
     private void Start()
     {
-        //‰Šúƒv[ƒ‹‚Ìì¬
+        //ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½[ï¿½ï¿½ï¿½Ìì¬
         pooledVFXs = new List<GameObject>();
         foreach (ObjectPoolVFX item in vfxsToPool)
         {
@@ -36,7 +36,7 @@ public class VFXManager : MonoBehaviour
             }
         }
     }
-    //ƒv[ƒ‹‚Ì’†‚Å”ñƒAƒNƒeƒBƒu‚Ì‚â‚Â‚ğŒ©‚Â‚¯‚éA–³‚¯‚ê‚ÎŠg’£
+    //ï¿½vï¿½[ï¿½ï¿½ï¿½Ì’ï¿½ï¿½Å”ï¿½Aï¿½Nï¿½eï¿½Bï¿½uï¿½Ì‚ï¿½Â‚ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎŠgï¿½ï¿½
     private GameObject GetPooledObject(string name)
     {
         for (int i = 0; i < pooledVFXs.Count; i++)
@@ -64,22 +64,22 @@ public class VFXManager : MonoBehaviour
         return null;
     }
     /// <summary>
-    /// ƒGƒtƒFƒNƒg”­¶ŠÖ”B
+    /// ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Öï¿½ï¿½B
     /// </summary>
-    /// <param name="name">ObjectPoolVFXƒNƒ‰ƒX‚É“o˜^‚µ‚Ä‚ ‚éƒGƒtƒFƒNƒg‚Ì–¼‘OB</param>
-    /// <param name="position">”­¶‚³‚¹‚éêŠ</param>
-    /// <param name="rotation">”­¶‚³‚¹‚éŒü‚«</param>
+    /// <param name="name">ObjectPoolVFXï¿½Nï¿½ï¿½ï¿½Xï¿½É“oï¿½^ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½Ì–ï¿½ï¿½Oï¿½B</param>
+    /// <param name="position">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½êŠ</param>
+    /// <param name="rotation">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
     public void PlayVFX(string name, Vector3 position, Quaternion rotation)
     {
-        //w’è‚µ‚½–¼‘O‚ÌƒGƒtƒFƒNƒg‚ğget
+        //ï¿½wï¿½è‚µï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ÌƒGï¿½tï¿½Fï¿½Nï¿½gï¿½ï¿½get
         GameObject vfx = GetPooledObject(name);
         if(vfx != null)
         {
-            //ˆÊ’u‰ñ“]‚ğˆø”‚É‡‚í‚¹‚é
+            //ï¿½Ê’uï¿½ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éï¿½ï¿½í‚¹ï¿½ï¿½
             vfx.transform.position = position;
             vfx.transform.rotation = rotation;
             vfx.SetActive(true);
-            //LineRenderer‚Æ‹¤—p‚È‚Ì‚Å‚±‚±‚É‘‚­
+            //LineRendererï¿½Æ‹ï¿½ï¿½pï¿½È‚Ì‚Å‚ï¿½ï¿½ï¿½ï¿½Éï¿½ï¿½ï¿½
             ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
             ps.Play(true);
             StartCoroutine(ParticleStop(ps.main.duration, vfx));
@@ -90,23 +90,43 @@ public class VFXManager : MonoBehaviour
             return;
         }
     }
+
+    public void Missile(string name, Vector3 position, Quaternion rotation, Transform target, float damage, int layerNum)
+    {
+        GameObject missile = GetPooledObject(name);
+        MissileBullet missileBullet = missile.GetComponent<MissileBullet>();
+        if(missile != null)
+        {
+            // missileã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å¤‰æ›´ã™ã‚‹(7: Missileã¯ignore raycastã¨ã®è¡çªã‚’ç„¡è¦–ã™ã‚‹)
+            missile.layer = layerNum;
+            // missileã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ä¸ãˆã‚‹
+            missile.transform.position = position;
+            missile.transform.rotation = rotation;
+            missile.SetActive(true);
+
+            missileBullet.target = target;
+            missileBullet.damage = damage;
+        }
+
+    }
+
     private IEnumerator ParticleStop(float delay, GameObject vfx)
     {
         yield return new WaitForSeconds(delay);
         vfx.SetActive(false);
     }
     /// <summary>
-    /// LineRenderer‚ÌƒGƒtƒFƒNƒg”­¶ŠÖ”B
+    /// LineRendererï¿½ÌƒGï¿½tï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Öï¿½ï¿½B
     /// </summary>
-    /// <param name="name">ObjectPoolVFXƒNƒ‰ƒX‚É“o˜^‚µ‚Ä‚ ‚éƒGƒtƒFƒNƒg‚Ì–¼‘O</param>
-    /// <param name="points">ü‚ÅŒ‹‚Ô‘S‚Ä‚ÌˆÊ’uB”z—ñ‚Ì‡‚É‚Â‚È‚°‚é</param>
-    /// <param name="duration">ƒGƒtƒFƒNƒg‘±ŠÔ</param>
+    /// <param name="name">ObjectPoolVFXï¿½Nï¿½ï¿½ï¿½Xï¿½É“oï¿½^ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½Ì–ï¿½ï¿½O</param>
+    /// <param name="points">ï¿½ï¿½ï¿½ÅŒï¿½ï¿½Ô‘Sï¿½Ä‚ÌˆÊ’uï¿½Bï¿½zï¿½ï¿½Ìï¿½ï¿½É‚Â‚È‚ï¿½ï¿½ï¿½</param>
+    /// <param name="duration">ï¿½Gï¿½tï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
     public void PlayLineRenderer(string name, Vector3[] points,float duration)
     {
         GameObject vfx = GetPooledObject(name);
         if (vfx != null)
         {
-            //’¸“_‚ğˆø”‚É‡‚í‚¹‚é
+            //ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éï¿½ï¿½í‚¹ï¿½ï¿½
             LineRenderer lr = vfx.GetComponent<LineRenderer>();
             lr.SetPositions(points);
             vfx.SetActive(true);
