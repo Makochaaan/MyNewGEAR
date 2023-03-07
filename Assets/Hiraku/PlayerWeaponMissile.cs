@@ -66,11 +66,12 @@ public class PlayerWeaponMissile : PlayerPartsFoundation
                     //射程内の何かに当たったら
                     if (Physics.Raycast(ray, out hit, range))
                     {
-                        VFXManager.SharedInstance.Missile("Missile", muzzle.position, muzzle.rotation, hit.transform, damage, missileLayerNum);
+                        VFXManager.SharedInstance.Missile("Missile", muzzle.position, muzzle.rotation, hit.transform, damage, missileLayerNum, hit.point);
                     }
 
                     //銃声エフェクト
                     SEManager.SharedInstance.PlaySE("GunFire", false, muzzle.position);
+
                 }
                 else
                 {

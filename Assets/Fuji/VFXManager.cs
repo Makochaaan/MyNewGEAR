@@ -91,7 +91,7 @@ public class VFXManager : MonoBehaviour
         }
     }
 
-    public void Missile(string name, Vector3 position, Quaternion rotation, Transform target, float damage, int layerNum)
+    public void Missile(string name, Vector3 position, Quaternion rotation, Transform target, float damage, int layerNum, Vector3 hitPosition)
     {
         GameObject missile = GetPooledObject(name);
         MissileBullet missileBullet = missile.GetComponent<MissileBullet>();
@@ -104,8 +104,16 @@ public class VFXManager : MonoBehaviour
             missile.transform.rotation = rotation;
             missile.SetActive(true);
 
-            missileBullet.target = target;
-            missileBullet.damage = damage;
+            if(target.TryGetComponent(out HPFoundation hpScript)){
+                missileBullet.target = target;
+                missileBullet.damage = damage;
+            }
+            else
+            {
+                missileBullet.target = target;
+                missileBullet.damage = damage;
+                missileBullet.direction = (hitPosition - position).normalized;
+            }
         }
 
     }

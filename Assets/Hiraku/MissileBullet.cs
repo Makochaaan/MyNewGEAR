@@ -10,7 +10,7 @@ public class MissileBullet : MonoBehaviour
     [HideInInspector] public float damage;
     public float trackFactor;
     private Quaternion targetRotation;
-    private Vector3 direction;
+    public Vector3 direction;
 
     
     // Start is called before the first frame update
@@ -22,7 +22,10 @@ public class MissileBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        direction = (target.position - transform.position).normalized;
+        // HPを持つオブジェクトであった場合
+        if(target.TryGetComponent(out HPFoundation hpScript)){
+            direction = (target.position - transform.position).normalized;
+        }
         targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackFactor);
         transform.Translate(Vector3.forward * Time.deltaTime * 10);
