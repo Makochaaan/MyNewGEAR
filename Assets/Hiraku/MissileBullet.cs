@@ -11,24 +11,19 @@ public class MissileBullet : MonoBehaviour
     public float trackFactor;
     private Quaternion targetRotation;
     public Vector3 direction;
+    public bool isTargeting;
 
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
         // HPを持つオブジェクトであった場合
-        if(target.TryGetComponent(out HPFoundation hpScript)){
+        if(isTargeting && target.gameObject.activeSelf){
             direction = (target.position - transform.position).normalized;
         }
         targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackFactor);
-        transform.Translate(Vector3.forward * Time.deltaTime * 10);
+        transform.Translate(Vector3.forward * Time.deltaTime * 20);
     }
 
     void OnTriggerEnter(Collider other)
