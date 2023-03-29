@@ -62,6 +62,51 @@ public partial class @Debug_Player : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemSlot1"",
+                    ""type"": ""Button"",
+                    ""id"": ""2489eab6-47e2-492d-894a-47cc440c59e7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemSlot2"",
+                    ""type"": ""Button"",
+                    ""id"": ""5de36428-0e1d-4d93-a1e3-d33707a1caaa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemSlot3"",
+                    ""type"": ""Button"",
+                    ""id"": ""c640544a-115f-4000-b4b5-a846c2c44b8b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemSlot4"",
+                    ""type"": ""Button"",
+                    ""id"": ""61770539-1c43-4b5f-a3e7-44e8e7b70fc4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca0c2e33-9744-4079-83b3-19b4630e0914"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -284,6 +329,116 @@ public partial class @Debug_Player : IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a9f6e2f8-e90c-414c-bbc8-f5aa3afa7be5"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse&Keyboard"",
+                    ""action"": ""ItemSlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""803c8146-0ff2-4fb6-89dd-626e40d3641f"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""ItemSlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7a96da5-c42b-49cc-bac1-6ded4d84d09d"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse&Keyboard"",
+                    ""action"": ""ItemSlot2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""183283d2-b463-4f91-9fc4-85140e1593f2"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""ItemSlot2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7aabbd4-eaf1-4407-8011-e7babb2843a1"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse&Keyboard"",
+                    ""action"": ""ItemSlot3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8509c5ae-d070-4be8-ade6-6acc1226a17e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""ItemSlot3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb80279d-4377-4f26-b3cd-b5bd37fe60b2"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse&Keyboard"",
+                    ""action"": ""ItemSlot4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc6d66ce-b6df-4d53-b2d6-11faa428ed0d"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""ItemSlot4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""56d4dd2d-6089-42b2-9106-e6678f784efe"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse&Keyboard"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1f20158-dd6b-4436-a4b0-28a5550d140b"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -324,6 +479,11 @@ public partial class @Debug_Player : IInputActionCollection2, IDisposable
         m_Game_Camera = m_Game.FindAction("Camera", throwIfNotFound: true);
         m_Game_Boost = m_Game.FindAction("Boost", throwIfNotFound: true);
         m_Game_Jump = m_Game.FindAction("Jump", throwIfNotFound: true);
+        m_Game_ItemSlot1 = m_Game.FindAction("ItemSlot1", throwIfNotFound: true);
+        m_Game_ItemSlot2 = m_Game.FindAction("ItemSlot2", throwIfNotFound: true);
+        m_Game_ItemSlot3 = m_Game.FindAction("ItemSlot3", throwIfNotFound: true);
+        m_Game_ItemSlot4 = m_Game.FindAction("ItemSlot4", throwIfNotFound: true);
+        m_Game_Fire = m_Game.FindAction("Fire", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -387,6 +547,11 @@ public partial class @Debug_Player : IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_Camera;
     private readonly InputAction m_Game_Boost;
     private readonly InputAction m_Game_Jump;
+    private readonly InputAction m_Game_ItemSlot1;
+    private readonly InputAction m_Game_ItemSlot2;
+    private readonly InputAction m_Game_ItemSlot3;
+    private readonly InputAction m_Game_ItemSlot4;
+    private readonly InputAction m_Game_Fire;
     public struct GameActions
     {
         private @Debug_Player m_Wrapper;
@@ -395,6 +560,11 @@ public partial class @Debug_Player : IInputActionCollection2, IDisposable
         public InputAction @Camera => m_Wrapper.m_Game_Camera;
         public InputAction @Boost => m_Wrapper.m_Game_Boost;
         public InputAction @Jump => m_Wrapper.m_Game_Jump;
+        public InputAction @ItemSlot1 => m_Wrapper.m_Game_ItemSlot1;
+        public InputAction @ItemSlot2 => m_Wrapper.m_Game_ItemSlot2;
+        public InputAction @ItemSlot3 => m_Wrapper.m_Game_ItemSlot3;
+        public InputAction @ItemSlot4 => m_Wrapper.m_Game_ItemSlot4;
+        public InputAction @Fire => m_Wrapper.m_Game_Fire;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -416,6 +586,21 @@ public partial class @Debug_Player : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_GameActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnJump;
+                @ItemSlot1.started -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot1;
+                @ItemSlot1.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot1;
+                @ItemSlot1.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot1;
+                @ItemSlot2.started -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot2;
+                @ItemSlot2.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot2;
+                @ItemSlot2.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot2;
+                @ItemSlot3.started -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot3;
+                @ItemSlot3.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot3;
+                @ItemSlot3.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot3;
+                @ItemSlot4.started -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot4;
+                @ItemSlot4.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot4;
+                @ItemSlot4.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnItemSlot4;
+                @Fire.started -= m_Wrapper.m_GameActionsCallbackInterface.OnFire;
+                @Fire.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnFire;
+                @Fire.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnFire;
             }
             m_Wrapper.m_GameActionsCallbackInterface = instance;
             if (instance != null)
@@ -432,6 +617,21 @@ public partial class @Debug_Player : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @ItemSlot1.started += instance.OnItemSlot1;
+                @ItemSlot1.performed += instance.OnItemSlot1;
+                @ItemSlot1.canceled += instance.OnItemSlot1;
+                @ItemSlot2.started += instance.OnItemSlot2;
+                @ItemSlot2.performed += instance.OnItemSlot2;
+                @ItemSlot2.canceled += instance.OnItemSlot2;
+                @ItemSlot3.started += instance.OnItemSlot3;
+                @ItemSlot3.performed += instance.OnItemSlot3;
+                @ItemSlot3.canceled += instance.OnItemSlot3;
+                @ItemSlot4.started += instance.OnItemSlot4;
+                @ItemSlot4.performed += instance.OnItemSlot4;
+                @ItemSlot4.canceled += instance.OnItemSlot4;
+                @Fire.started += instance.OnFire;
+                @Fire.performed += instance.OnFire;
+                @Fire.canceled += instance.OnFire;
             }
         }
     }
@@ -460,5 +660,10 @@ public partial class @Debug_Player : IInputActionCollection2, IDisposable
         void OnCamera(InputAction.CallbackContext context);
         void OnBoost(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnItemSlot1(InputAction.CallbackContext context);
+        void OnItemSlot2(InputAction.CallbackContext context);
+        void OnItemSlot3(InputAction.CallbackContext context);
+        void OnItemSlot4(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
     }
 }

@@ -24,6 +24,17 @@ namespace Michsky.UI.Shift
 
         void OnEnable()
         {
+            if (audioObject == null)
+            {
+                if (GameObject.Find("UIAudioSource").TryGetComponent(out AudioSource audioSource))
+                {
+                    audioObject = audioSource;
+                }
+                else
+                {
+                    Debug.LogError("UIAudioSource not found");
+                }
+            }
             if (UIManagerAsset == null)
             {
                 try { UIManagerAsset = Resources.Load<UIManager>("Shift UI Manager"); }

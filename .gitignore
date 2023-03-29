@@ -72,10 +72,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Sozai which Fuji downloaded
-/[Aa]ssets/Archanor
-/[Aa]ssets/SciFi Warehouse Kit
 /[Aa]ssets/FishNet
 /[Aa]ssets/_TerrainAutoUpgrade
-/[Aa]ssets/StonyGroundPackage
-/[Aa]ssets/Samples
-/[Aa]ssets/Extreme Sci-Fi LITE
