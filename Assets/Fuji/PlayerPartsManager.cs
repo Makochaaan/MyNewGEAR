@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -146,7 +145,7 @@ public class PlayerPartsManager : MonoBehaviour
             if (currentParts.gameObject.TryGetComponent(out PlayerPartsArm myArmScript) && !selectedParts.gameObject.TryGetComponent(out PlayerPartsArm selectedArmScript))
             {
                 partsOnParts = true;
-                partsSlots[slotNumber].slotTransform = myArmScript.myHand;
+                partsSlots[slotNumber].slotTransform = myArmScript.myHandTransform;
             }
             //腕以外-腕以外、腕以外-腕、腕-腕の場合、古い方を解除する
             //装備を持った腕が交換されるとき枠の場所を元に戻す
@@ -154,14 +153,10 @@ public class PlayerPartsManager : MonoBehaviour
             {
                 partsSlots[slotNumber].slotTransform = partsSlots[slotNumber].slotTransformTemp;
                 partsSlots[slotNumber].parts.OnActiveStateChange(false);
-                partsSlots[slotNumber].parts.OnReleased();
+                partsSlots[slotNumber].parts.OnReleased(partsSlots[slotNumber].slotLevel);
             }
         }
         //装備先が空の場合ここから
-        //パーツの場所と親を枠に変更
-        selectedParts.transform.position = partsSlots[slotNumber].slotTransform.position;
-        selectedParts.transform.transform.rotation = partsSlots[slotNumber].slotTransform.rotation;
-        selectedParts.transform.parent = partsSlots[slotNumber].slotTransform;
         //枠レベルアップ、UIに反映
         partsSlots[slotNumber].slotLevel++;
         //パーツに重ね付けならそういう処理
@@ -183,7 +178,7 @@ public class PlayerPartsManager : MonoBehaviour
 
         //枠のUIを装備したパーツのものにする
         myPlayerUI.ChangeSlotIcon(slotNumber, selectedParts.slotIcon);
-        selectedParts.OnEquipped(partsSlots[slotNumber].slotLevel);
+        selectedParts.OnEquipped(partsSlots[slotNumber].slotTransform, partsSlots[slotNumber].slotLevel);
         
         VFXManager.SharedInstance.PlayVFX($"Equip{(partsSlots[slotNumber].slotLevel <= 6 ? partsSlots[slotNumber].slotLevel : 6)}", transform.position, transform.rotation);
     }

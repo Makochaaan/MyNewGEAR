@@ -11,10 +11,9 @@ public class MoveForPlayer : MonoBehaviour
     /*参考文献：http://qiita.com/yando/items/c406690c9ad87ecfc8e5
     * StandardAsset ThirdPersonUserControl.cs
     */
-    [SerializeField] private float _moveSpeed = 5;
     [SerializeField] private float _jumpForce = 5;
-    [SerializeField] private float dashFactor = 1.5f;
-    private float dashFactorTemp;
+    private float boostFactorTemp;
+    private bool energyEnabled = true;
 
     public static GameInputs _gameInputs;
     private Vector2 _moveInputValue;
@@ -29,8 +28,8 @@ public class MoveForPlayer : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
         _characterStatus = GetComponent<CharacterStatus>();
+        _rigidbody = GetComponent<Rigidbody>();
         camTransform = Camera.main.transform;
         // Input Actionインスタンス生成
         _gameInputs = new GameInputs();
@@ -40,11 +39,18 @@ public class MoveForPlayer : MonoBehaviour
         _gameInputs.Player.Move.canceled += OnMove;
         _gameInputs.Player.Jump.performed += OnJump;
 
-        // Input Actionを機能させるためには、
-        // 有効化する必要がある
+        Cursor.lockState = CursorLockMode.Locked;
+        boostFactorTemp = 1;
+    }
+    private void Start()
+    {
+        Invoke("EnableWithDelay",3);
+    }
+    void EnableWithDelay()
+    {
+        // Input Actionを機能させるためには、有効化する必要がある
         _gameInputs.Enable();
     }
-
     private void OnMove(InputAction.CallbackContext context)
     {
         // Moveアクションの入力取得
@@ -53,21 +59,19 @@ public class MoveForPlayer : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (_characterStatus.currentEnergy > _characterStatus.energyConsumption * 3)
+        if (_characterStatus.currentEnergy > _characterStatus.energyConsumption / 2)
         {
             // ジャンプする力を与える
             _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
-            _characterStatus.jumpedThisFrame = true;
-            _characterStatus.currentEnergy -= _characterStatus.energyConsumption * 3;
+            _characterStatus.currentEnergy -= _characterStatus.energyConsumption / 2;
         }
     }
-
-    void Start()
+    private IEnumerator LockEnergy(float delay)
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        dashFactorTemp = 1;
+        energyEnabled = false;
+        yield return new WaitForSeconds(delay);
+        energyEnabled = true;
     }
-
     private void FixedUpdate()
     {
         //キーボード数値取得。プレイヤーの方向として扱う
@@ -80,9 +84,9 @@ public class MoveForPlayer : MonoBehaviour
 
         //方向転換
         moveDirection = new Vector3(_moveInputValue.x, 0, _moveInputValue.y).normalized;
-
+        boostFactorTemp = (energyEnabled && _gameInputs.Player.Dash.ReadValue<float>() == 1 && _characterStatus.currentEnergy > 0) ? _characterStatus.boostFactor : 1;
         //エネルギー回復
-        if(_characterStatus.isOnGround && dashFactorTemp == 1 && _characterStatus.currentEnergy < _characterStatus.maxEnergy)
+        if (_characterStatus.isOnGround && boostFactorTemp == 1 && _characterStatus.currentEnergy < _characterStatus.maxEnergy)
         {
             _characterStatus.currentEnergy += _characterStatus.energyRecoverySpeed * Time.deltaTime;
         }
@@ -97,18 +101,18 @@ public class MoveForPlayer : MonoBehaviour
             return;
         }
 
-        dashFactorTemp = (_gameInputs.Player.Dash.ReadValue<float>() == 1　&& _characterStatus.currentEnergy > 0) ? dashFactor : 1;
-
-        _rigidbody.MovePosition(transform.position + (moveDirection * _characterStatus.speed * Time.deltaTime) * dashFactorTemp);
+        _rigidbody.MovePosition(transform.position + (moveDirection * _characterStatus.speed * (100.0f/_characterStatus.weight) * Time.deltaTime) * boostFactorTemp);
 
         //ダッシュ中にエネルギーを消費する
-        if (dashFactorTemp > 1)
+        if (boostFactorTemp > 1)
         {
             _characterStatus.currentEnergy -= _characterStatus.energyConsumption * Time.deltaTime;
+            //エネルギーがほぼ空になったらブースト使用を禁止し、回復する
+            if (_characterStatus.currentEnergy < 1) StartCoroutine(LockEnergy(1));
             //空中ダッシュは重力を軽減する
             if (_rigidbody.velocity.y < 0)
             {
-                _rigidbody.AddForce(Vector3.up * -_rigidbody.velocity.y * 5 * Time.deltaTime, ForceMode.VelocityChange);
+                _rigidbody.AddForce(Vector3.up * -_rigidbody.velocity.y * 5 * Time.deltaTime, ForceMode.Impulse);
             }
         }
     }

@@ -34,6 +34,7 @@ public class TitleUIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
         foreach (var rect in rootButtonsRect)
         {
             rect.DOScaleY(1, 0.5f).SetDelay(initialDelay).SetEase(Ease.OutExpo);

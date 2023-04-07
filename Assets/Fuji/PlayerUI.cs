@@ -4,21 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Michsky.UI.Shift;
+//LT用、Pボタンで即タイトルへ
+using UnityEngine.SceneManagement;
 
 public class PlayerUI : MonoBehaviour
 {
-    [SerializeField] private Canvas UICanvas;
     [SerializeField] private UIManager UIManagerAsset;
     [SerializeField] private Image[] slots;
     [SerializeField] private Sprite activeSlotBackground, inactiveSlotBackground;
     private Image[] slotFrames;
     private TextMeshProUGUI[] slotLevelTexts;
     private Image[] slotIcons;
+    public Slider hpSlider, energySlider;
 
     // Start is called before the first frame update
     void Start()
     {
-        UICanvas = GameObject.Find("PlayerUICanvas").GetComponent<Canvas>();
         InitializeSlotUI();
     }
     private void InitializeSlotUI()
@@ -64,15 +65,18 @@ public class PlayerUI : MonoBehaviour
     }
     public void ChangeSlotIcon(int slotNumber, Sprite icon)
     {
-        if (icon != null)
+        if (IsVaildSlotNumber(slotNumber))
         {
-            slotIcons[GetSlotNumberForUI(slotNumber)].gameObject.SetActive(true);
-            slotIcons[GetSlotNumberForUI(slotNumber)].sprite = icon;
-        }
-        else
-        {
-            slotIcons[GetSlotNumberForUI(slotNumber)].gameObject.SetActive(false);
-            slotIcons[GetSlotNumberForUI(slotNumber)].sprite = null;
+            if (icon != null)
+            {
+                slotIcons[GetSlotNumberForUI(slotNumber)].gameObject.SetActive(true);
+                slotIcons[GetSlotNumberForUI(slotNumber)].sprite = icon;
+            }
+            else
+            {
+                slotIcons[GetSlotNumberForUI(slotNumber)].gameObject.SetActive(false);
+                slotIcons[GetSlotNumberForUI(slotNumber)].sprite = null;
+            }
         }
     }
     public void ChangeSlotLevel(int slotNumber, int slotLevel)
@@ -83,5 +87,22 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        foreach (PooledUI pooledUI in ObjectPoolUI.sharedInstance.pooledUIs)
+        {
+            if (pooledUI.uiObject.activeInHierarchy)
+            {
+                switch (pooledUI.uiObject.name)
+                {
+                    case "DamageText":
+                        pooledUI.myTransform.position = Camera.main.WorldToScreenPoint(pooledUI.positionTemp);
+                        break;
+                    default:
+                        break;
+                }
 
+            }
+        }
+    }
 }

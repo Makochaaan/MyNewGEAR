@@ -46,8 +46,6 @@ public class TutorialDialog : MonoBehaviour
             closeSequence.Append(dialogText.DOFade(0, time))
                          .Append(dialogBackground.DOSizeDelta(Vector2.zero, time).SetEase(Ease.OutQuint))
                          .Join(dialogFrame.DOSizeDelta(Vector2.zero, time).SetEase(Ease.OutQuint));
-            
-            //closeSequence.Restart();
         }
     }
 }

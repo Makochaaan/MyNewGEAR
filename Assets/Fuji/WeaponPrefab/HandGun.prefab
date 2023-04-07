@@ -284,7 +284,7 @@ MonoBehaviour:
   damage: 50
   fireRate: 2
   bulletCount: 1
-  energyConsumption: 0
+  energyConsumption: 5
   range: 100
   accuracy: 0
 --- !u!1 &5669910077565192867

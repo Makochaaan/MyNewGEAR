@@ -116,6 +116,15 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToTitle"",
+                    ""type"": ""Button"",
+                    ""id"": ""74b77a6b-4c2a-43b2-9f82-c5590a0def0b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -380,6 +389,28 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""GamePad"",
                     ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f5c6560-8090-4e1c-97ad-3527f46323c3"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse&Keyboard"",
+                    ""action"": ""ToTitle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b2949397-e158-4a24-88a0-9aec4b49a91b"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad"",
+                    ""action"": ""ToTitle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -798,6 +829,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         m_Player_ItemSlot4 = m_Player.FindAction("ItemSlot4", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_ToTitle = m_Player.FindAction("ToTitle", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -875,6 +907,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ItemSlot4;
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_ToTitle;
     public struct PlayerActions
     {
         private @GameInputs m_Wrapper;
@@ -889,6 +922,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         public InputAction @ItemSlot4 => m_Wrapper.m_Player_ItemSlot4;
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @ToTitle => m_Wrapper.m_Player_ToTitle;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -928,6 +962,9 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                 @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
+                @ToTitle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToTitle;
+                @ToTitle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToTitle;
+                @ToTitle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToTitle;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -962,6 +999,9 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
+                @ToTitle.started += instance.OnToTitle;
+                @ToTitle.performed += instance.OnToTitle;
+                @ToTitle.canceled += instance.OnToTitle;
             }
         }
     }
@@ -1069,6 +1109,7 @@ public partial class @GameInputs : IInputActionCollection2, IDisposable
         void OnItemSlot4(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnToTitle(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -16,22 +16,22 @@ public class HPFoundation : MonoBehaviour
     [SerializeField] private bool showHPBar;
     private float hpBarTimer;
 
-    public virtual void Damage(float damage, Vector3 position)
+    public virtual void Damage(int damage, Vector3 position)
     {
-        currentHP = Mathf.RoundToInt(currentHP - damage);
-        ShowDamage(Mathf.RoundToInt(damage), position);
+        currentHP -= damage;
+        ShowDamage(damage, position);
         if (showHPBar) ShowHPBar();
-        if (currentHP <= 0)
-        {
-            OnHPZero();
-        }
+        if (currentHP <= 0) OnHPZero();
     }
     protected virtual void OnHPZero()
     {
+        if (myHPBar != null)
+        {
+            myHPBar.SetActive(false);
+        }
         Debug.Log("hp zero from base class");
     }
 
-    
     private IEnumerator DeactivateWithDelay(float delay, GameObject obj)
     {
         yield return new WaitForSeconds(delay);
@@ -69,24 +69,10 @@ public class HPFoundation : MonoBehaviour
     }
     protected virtual void Update()
     {
-        foreach (PooledUI pooledUI in ObjectPoolUI.sharedInstance.pooledUIs)
-        {
-            if (pooledUI.uiObject.activeInHierarchy)
-            {
-                switch (pooledUI.uiObject.name)
-                {
-                    case "DamageText":
-                        pooledUI.myTransform.position = Camera.main.WorldToScreenPoint(pooledUI.positionTemp);
-                        break;
-                    default:
-                        break;
-                }
-                
-            }
-        }
         if (myHPBar != null && myHPBar.activeInHierarchy)
         {
             hpBarTimer += Time.deltaTime;
+            //StartCoroutine(Deact...3,myHPBar)‚Æ‚·‚é‚ÆA3•b‚É1‰ñˆêuÁ‚¦‚éŠ´‚¶‚É‚È‚é
             if (hpBarTimer >= 3) StartCoroutine(DeactivateWithDelay(0, myHPBar));
             hpBarRectTransform.position = Camera.main.WorldToScreenPoint(transform.position);
         }

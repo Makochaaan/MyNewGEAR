@@ -19,10 +19,12 @@ public class Target : HPFoundation
         gameObject.SetActive(false);
         VFXManager.SharedInstance.PlayVFX("TargetBreak", transform.position, Quaternion.identity);
         SEManager.SharedInstance.PlaySE("TargetBreak", false, transform.position);
+        if (BreakTheTargetManager.sharedInstance != null) BreakTheTargetManager.sharedInstance.CheckTargetList();
+        
     }
     protected override void Update()
     {
         base.Update();
-        transform.LookAt(Camera.main.transform.position);
+        transform.rotation = Camera.main.transform.rotation;
     }
 }

@@ -6,19 +6,20 @@ public class RandomSpawn : MonoBehaviour
 {
     [SerializeField] private GameObject spawnPrefab;
     [SerializeField] private int quantity;
-    private static List<GameObject> pooledObjects;
+    [SerializeField] private bool respawnIfZero,spawnOnStart;
+    private List<GameObject> pooledObjects;
     [SerializeField] private BoxCollider spawnArea;
     [SerializeField] private BoxCollider[] NGArea;
     public int currentAlive;
 
     private void Awake()
     {
-        pooledObjects = null;
+        pooledObjects = new List<GameObject>();
+        currentAlive = 0;
     }
     private void Start()
     {
-        pooledObjects = new List<GameObject>();
-        currentAlive = 0;
+        if (spawnOnStart) Spawn(quantity);
     }
     private GameObject GetSpawnObject()
     {
@@ -81,7 +82,7 @@ public class RandomSpawn : MonoBehaviour
         Vector3 areaSize = spawnArea.size;
         while(count < quantity)
         {
-            Vector3 spawnPosition = transform.position + new Vector3(RandomInRange(areaSize.x), RandomInRange(areaSize.y), RandomInRange(areaSize.z));
+            Vector3 spawnPosition = transform.position + spawnArea.center + new Vector3(RandomInRange(areaSize.x), RandomInRange(areaSize.y), RandomInRange(areaSize.z));
             if (isValidPosition(spawnPosition))
             {
                 GameObject obj = GetSpawnObject();
@@ -89,6 +90,7 @@ public class RandomSpawn : MonoBehaviour
                 obj.transform.position = spawnPosition;
                 obj.SetActive(true);
                 currentAlive++;
+                if (BreakTheTargetManager.sharedInstance != null) BreakTheTargetManager.sharedInstance.targetsList.Add(obj);
                 count++;
             }
         }
@@ -101,7 +103,7 @@ public class RandomSpawn : MonoBehaviour
         }
         else
         {
-            Spawn(quantity);
+            if (respawnIfZero) Spawn(quantity);
         }
     }
 }

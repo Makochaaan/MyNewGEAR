@@ -13,6 +13,7 @@ public class ChangeSetting : MonoBehaviour
     [SerializeField] private BGMPlayer bgmPlayer;
     private void Start()
     {
+        bgmPlayer = GameObject.Find("BGMSource").GetComponent<BGMPlayer>();
         saveData = GetComponent<SaveData>();
         if (bgmSlider != null && seSlider != null)
         {

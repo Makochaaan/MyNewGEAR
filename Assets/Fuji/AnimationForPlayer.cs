@@ -16,32 +16,44 @@ public class AnimationForPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 inputDirection = MoveForPlayer._gameInputs.Player.Move.ReadValue<Vector2>();
-        if(inputDirection.magnitude > 0.2f)
+        if (MoveForPlayer._gameInputs != null)
         {
-            myAnim.SetFloat("MoveSpeed", 1);
-            myAnim.speed = (MoveForPlayer._gameInputs.Player.Dash.ReadValue<float>() == 1) ? 1.5f : 1;
-        }
-        else
-        {
-            myAnim.SetFloat("MoveSpeed", 0);
+            Vector2 inputDirection = MoveForPlayer._gameInputs.Player.Move.ReadValue<Vector2>();
+
+            if (inputDirection.magnitude > 0.2f)
+            {
+                myAnim.SetBool("isMoving", true);
+
+                if (MoveForPlayer._gameInputs.Player.Dash.ReadValue<float>() == 1)
+                {
+                    myAnim.SetFloat("MoveSpeed", characterStatus.boostFactor);
+                }
+                else
+                {
+                    myAnim.SetFloat("MoveSpeed", 1);
+                }
+            }
+            else
+            {
+                myAnim.SetBool("isMoving", false);
+            }
         }
         if (characterStatus.landedThisFrame)
         {
             myAnim.SetBool("Land", true);
-            myAnim.SetBool("Jump", false);
+            myAnim.SetBool("InAir", false);
+            return;
         }
-        if (characterStatus.jumpedThisFrame)
+        if (!characterStatus.isOnGround)
         {
-            myAnim.SetBool("Jump", true);
+            myAnim.SetBool("InAir", true);
             myAnim.SetBool("Land", false);
-            characterStatus.jumpedThisFrame = false;
         }
     }
 }

@@ -6,7 +6,7 @@ public class BGMPlayer : MonoBehaviour
 {
     public static BGMPlayer instance;
     private AudioSource BGMSource;
-    [SerializeField] private SaveData saveData;
+    private SaveData saveData;
     [SerializeField] private float initialDelay;
     private void Awake()
     {
@@ -23,6 +23,7 @@ public class BGMPlayer : MonoBehaviour
     }
     private void Start()
     {
+        saveData = GameObject.Find("SaveData").GetComponent<SaveData>();
         BGMSource.volume = 0;
         BGMSource.Play();
         BGMSource.DOFade(saveData.jsonProperty.bgmVolume, 1).SetDelay(initialDelay);

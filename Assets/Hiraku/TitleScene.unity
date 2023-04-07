@@ -9727,6 +9727,7 @@ GameObject:
   - component: {fileID: 837912006}
   - component: {fileID: 837912009}
   - component: {fileID: 837912008}
+  - component: {fileID: 837912012}
   m_Layer: 5
   m_Name: TimeAttackButton
   m_TagString: Untagged
@@ -9777,7 +9778,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1589080993}
+        m_TargetAssemblyTypeName: TitleUIManager, Assembly-CSharp
+        m_MethodName: ChangeSceneFade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 837912012}
+        m_TargetAssemblyTypeName: ChangeSceneScript, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &837912008
 Animator:
   serializedVersion: 4
@@ -9811,7 +9836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverSFX: {fileID: 0}
-  clickSFX: {fileID: 0}
+  clickSFX: {fileID: 8300000, guid: 468f662ba85278c419ef967f7c33907b, type: 3}
   enableHoverSound: 1
   enableClickSound: 1
   checkForInteraction: 1
@@ -9855,6 +9880,20 @@ RectTransform:
   m_AnchoredPosition: {x: 480, y: 0}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &837912012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837912005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2506154061bc6ad47a9a0a99c7ecceec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 3
+  nextSceneName: BreakTheTargetStage1
 --- !u!1 &839779839
 GameObject:
   m_ObjectHideFlags: 0

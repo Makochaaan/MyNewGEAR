@@ -10,7 +10,8 @@ public class PlayerWeaponGun : PlayerPartsFoundation
 #endif
     private Transform muzzle;
     //連射速度、一発あたりの弾数、二個目以降の集弾性、燃費、射程
-    [SerializeField] private float damage, fireRate, bulletCount, energyConsumption, range;
+    [SerializeField] private int damage, bulletCount, energyConsumption, range;
+    [SerializeField] private float fireRate;
     public float accuracy;
     private float elapsedTime;
     private float inaccuracyRatio = 0.125f;
@@ -38,24 +39,30 @@ public class PlayerWeaponGun : PlayerPartsFoundation
         return slotNumber;
     }
     //枠レベルを引数に銃の初期化処理
-    public override void OnEquipped(int slotLevel)
+    public override void OnEquipped(Transform parent, int slotLevel)
     {
-        base.OnEquipped(slotLevel);
+        base.OnEquipped(parent, slotLevel);
         characterStatus = transform.root.GetComponent<CharacterStatus>();
         damageLevel = slotLevel <= 6 ? slotLevel : 6;
         damage = (int)(damage * Mathf.Pow(1.15f, damageLevel - 1));
+        if(transform.parent.TryGetComponent(out PlayerPartsArm arm))
+        {
+            damage += (arm.damageBonus * slotLevel);
+            fireRate += (arm.fireRateBonus * slotLevel);
+            energyConsumption -= (arm.energyConsumptionBonus * slotLevel);
+            range += (arm.rangeBonus * slotLevel);
+        }
     }
     public override void Use()
     {
         //連射確認
-        if (elapsedTime > (float)1 / fireRate)
+        if (elapsedTime > 1.0f / fireRate)
         {
-            PlayerUI playerUI = transform.root.GetComponent<PlayerUI>();
             for (int i = 0; i < bulletCount; i++)
             {
                 if (characterStatus.currentEnergy > energyConsumption)
                 {
-                    characterStatus.currentEnergy -= energyConsumption;
+                    characterStatus.currentEnergy -= Mathf.Max(0, energyConsumption);
                     int isMoreThanZero = i > 0 ? 1 : 0;
                     //画面中央に向かってレイ、二個目以降の弾丸は集弾性補正がかかる
                     //集弾性最低の場合、画面の幅1/8ぐらいの半径でブレる
@@ -89,7 +96,7 @@ public class PlayerWeaponGun : PlayerPartsFoundation
                     VFXManager.SharedInstance.PlayLineRenderer($"GunBulletTrail{damageLevel}", new Vector3[2] { muzzle.position, trailEnd }, 0.1f);
 
                     //銃声エフェクト
-                    SEManager.SharedInstance.PlaySE("GunFire", false, muzzle.position);
+                    if (isMoreThanZero == 0) SEManager.SharedInstance.PlaySE("GunFire", false, muzzle.position);
                 }
                 else
                 {

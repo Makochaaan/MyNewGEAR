@@ -34,7 +34,7 @@ public class SaveData : MonoBehaviour
             jsonProperty.bgmVolume = 0.2f;
             jsonProperty.seVolume = 0.2f;
             jsonProperty.cameraSensitivity = 80;
-            jsonProperty.aimFactor = 0.5f;
+            jsonProperty.aimFactor = 50;
             jsonProperty.flipX = 1;
             jsonProperty.flipY = 1;
             jsonProperty.stageStatuses = new List<StageStatus>();

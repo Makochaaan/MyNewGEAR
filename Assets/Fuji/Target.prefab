@@ -61,8 +61,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 1
   currentHP: 1
-  hpBarPrefab: {fileID: 0}
-  showHPBar: 0
+  hpBarPrefab: {fileID: 1809263796448197606, guid: e414f33dba773d246978e2a79f540236,
+    type: 3}
+  showHPBar: 1
   mySpawnScript: {fileID: 0}
 --- !u!1 &6693903982894824003
 GameObject:
