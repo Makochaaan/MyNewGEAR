@@ -66,7 +66,7 @@ public class PlayerWeaponGun : PlayerPartsFoundation
                     int isMoreThanZero = i > 0 ? 1 : 0;
                     //画面中央に向かってレイ、二個目以降の弾丸は集弾性補正がかかる
                     //集弾性最低の場合、画面の幅1/8ぐらいの半径でブレる
-                    elapsedTime = 0;
+
                     VFXManager.SharedInstance.PlayVFX($"GunBulletStart{damageLevel}", muzzle.position, muzzle.rotation);
                     Ray ray = Camera.main.ViewportPointToRay(new Vector2(0.5f + isMoreThanZero * Mathf.Max(0, 1 - accuracy) * Random.Range(-inaccuracyRatio, inaccuracyRatio),
                                                                          0.5f + isMoreThanZero * Mathf.Max(0, 1 - accuracy) * Random.Range(-inaccuracyRatio, inaccuracyRatio) * ((float)Screen.width / (float)Screen.height)));
@@ -97,6 +97,13 @@ public class PlayerWeaponGun : PlayerPartsFoundation
 
                     //銃声エフェクト
                     if (isMoreThanZero == 0) SEManager.SharedInstance.PlaySE("GunFire", false, muzzle.position);
+                    //インターバルを設けつつ、射撃ボイス
+                    if(elapsedTime >= 1)
+                    {
+                        int voiceRandomizer = Random.Range(0, 5);
+                        SEManager.SharedInstance.PlayVoice($"FireVoice{voiceRandomizer}", false);
+                    }
+                    elapsedTime = 0;
                 }
                 else
                 {

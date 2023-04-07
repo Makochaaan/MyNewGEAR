@@ -4,8 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Michsky.UI.Shift;
-//LT用、Pボタンで即タイトルへ
+using DG.Tweening;
+using UnityEditor.Rendering;
+
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -21,6 +24,7 @@ public class PlayerUI : MonoBehaviour
     void Start()
     {
         InitializeSlotUI();
+        SEManager.SharedInstance.PlaySE("ReadyVoice",false,Vector3.zero);
     }
     private void InitializeSlotUI()
     {
@@ -32,14 +36,22 @@ public class PlayerUI : MonoBehaviour
             slots[i].gameObject.GetComponent<Image>().color = UIManagerAsset.primaryColor;
             slotFrames[i] = slots[i].transform.GetChild(0).GetComponent<Image>();
             slotFrames[i].color = UIManagerAsset.primaryColor;
+            slotFrames[i].gameObject.SetActive(false);
             slotLevelTexts[i] = slots[i].transform.GetChild(2).GetComponent<TextMeshProUGUI>();
             slotLevelTexts[i].text = "Lv.0";
             slotIcons[i] = slots[i].transform.GetChild(3).GetComponent<Image>();
             slotIcons[i].gameObject.SetActive(false);
-            ActiveStateChangeUI(i, false);
+            //ActiveStateChangeUI(i, false);
+
+            Sequence openSequence = DOTween.Sequence();
+            //閉じるアニメーションを必ず終了してから開くアニメーション
+            openSequence.Append(slots[i].rectTransform.DOScale(Vector3.one * 0.85f, 1).SetEase(Ease.OutQuint).SetDelay(i*0.5f))
+                        //.Join(slotFrames[i].rectTransform.DOScale(Vector3.zero,0).SetEase(Ease.OutQuint))
+                        .Append(slotLevelTexts[i].DOFade(1, 1));
+
         }
         //引数が変換される過程で4番目ができないのでここでやる
-        ActiveStateChangeUI(4, false);
+        //ActiveStateChangeUI(4, false);
     }
 
 
@@ -103,6 +115,12 @@ public class PlayerUI : MonoBehaviour
                 }
 
             }
+        }
+
+        //突貫タイトルボタン
+        if (MoveForPlayer._gameInputs.Player.ToTitle.WasPressedThisFrame())
+        {
+            SceneManager.LoadScene("TitleScene");
         }
     }
 }

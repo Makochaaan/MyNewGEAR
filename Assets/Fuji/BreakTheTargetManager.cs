@@ -37,6 +37,7 @@ public class BreakTheTargetManager : MonoBehaviour
             targetLeftText.text = targetCount.ToString();
             start = Time.time;
             started = true;
+            SEManager.SharedInstance.PlayVoice("TimerStartVoice", true);
         }
     }
     private void Update()
@@ -61,6 +62,7 @@ public class BreakTheTargetManager : MonoBehaviour
         elapsedTime = Time.time - start;
         ShowRanking();
         started = false;
+        SEManager.SharedInstance.PlayVoice("TimerStopVoice", true);
     }
     private TimeSpan GetClearTime()
     {

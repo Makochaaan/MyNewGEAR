@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(SaveData))]
 [System.Serializable]
@@ -11,16 +12,25 @@ public class ObjectPoolSE
     public int initialPool;
     public bool expandAllowed = true;
 }
+[Serializable]
+public class VoiceSE
+{
+    public string name;
+    public AudioClip voiceClip;
+}
 public class SEManager : MonoBehaviour
 {
     public static SEManager SharedInstance;
     [SerializeField] private SaveData saveData;
+    private AudioSource voiceSource;
+    private bool isPlayingHighPriorityVoice;
 
     private void Awake()
     {
         SharedInstance = this;
     }
     public List<ObjectPoolSE> sesToPool;
+    public List<VoiceSE> voiceList;
     private List<GameObject> pooledSEs;
     private void Start()
     {
@@ -40,6 +50,11 @@ public class SEManager : MonoBehaviour
                 obj.SetActive(false);
                 pooledSEs.Add(obj);
             }
+        }
+        if(TryGetComponent(out AudioSource AS))
+        {
+            voiceSource = AS;
+            voiceSource.volume = saveData.jsonProperty.seVolume;
         }
     }
     //プールの中で非アクティブのやつを見つける、無ければ拡張
@@ -96,6 +111,24 @@ public class SEManager : MonoBehaviour
         {
             Debug.LogWarning($"SE '{name}' not found!");
             return;
+        }
+    }
+    public void PlayVoice(string name, bool isHighPriority)
+    {
+        if(!voiceSource.isPlaying || isHighPriority || !isPlayingHighPriorityVoice)
+        {
+            voiceSource.Stop();
+            foreach (VoiceSE voice in voiceList)
+            {
+                if(voice.name == name)
+                {
+                    voiceSource.clip = voice.voiceClip;
+                    isPlayingHighPriorityVoice = isHighPriority;
+                    voiceSource.Play();
+                    return;
+                }
+            }
+            Debug.LogWarning($"Voice '{name}' not found!");
         }
     }
     private IEnumerator SEStop(float delay, string name, GameObject se)
