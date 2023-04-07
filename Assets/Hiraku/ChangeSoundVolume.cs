@@ -12,7 +12,7 @@ public class ChangeSoundVolume : MonoBehaviour
     public Slider bgmSlider, seSlider;
     [HideInInspector] public string filePath;
     [HideInInspector] public SaveData saveData;
-    [SerializeField] List<stageStatus> init;
+    [SerializeField] List<StageStatus> init;
 
     private void Awake()
     {
@@ -32,9 +32,9 @@ public class ChangeSoundVolume : MonoBehaviour
         if (File.Exists(filePath) == false)
         {
             saveData = new SaveData();
-            saveData.bgmVolume = 0.2f;
-            saveData.seVolume = 0.2f;
-            saveData.stageStatuses = init;
+            saveData.jsonProperty.bgmVolume = 0.2f;
+            saveData.jsonProperty.seVolume = 0.2f;
+            saveData.jsonProperty.stageStatuses = init;
             JSONSave();
         }
         //ファイルがあるならロード、saveDataに代入
@@ -46,20 +46,20 @@ public class ChangeSoundVolume : MonoBehaviour
 
         if (bgmSlider != null && seSlider != null)
         {
-            bgmSlider.value = saveData.bgmVolume;
-            seSlider.value = saveData.seVolume;
+            bgmSlider.value = saveData.jsonProperty.bgmVolume;
+            seSlider.value = saveData.jsonProperty.seVolume;
         }
         yield return null;
         if (bgmSource != null)
         {
-            bgmSource.volume = saveData.bgmVolume;
+            bgmSource.volume = saveData.jsonProperty.bgmVolume;
             bgmSource.loop = true;
             bgmSource.spatialBlend = 0;
             bgmSource.Play();
         }
         if(shiftUIAudioSource != null)
         {
-            shiftUIAudioSource.volume = saveData.seVolume;
+            shiftUIAudioSource.volume = saveData.jsonProperty.seVolume;
         }
     }
 
@@ -88,7 +88,7 @@ public class ChangeSoundVolume : MonoBehaviour
         // BGMの音量をスライドバーの値に変更
         bgmSource.volume = newSliderValue;
         // jsonに保存
-        saveData.bgmVolume = newSliderValue;
+        saveData.jsonProperty.bgmVolume = newSliderValue;
         JSONSave();
 	}
 
@@ -99,7 +99,7 @@ public class ChangeSoundVolume : MonoBehaviour
         // SEの音量をスライドバーの値に変更
         shiftUIAudioSource.volume = newSliderValue;
         // jsonに保存
-        saveData.seVolume = newSliderValue;
+        saveData.jsonProperty.seVolume = newSliderValue;
         JSONSave();
 	}
 }
