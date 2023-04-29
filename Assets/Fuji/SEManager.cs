@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
@@ -34,7 +34,7 @@ public class SEManager : MonoBehaviour
     private List<GameObject> pooledSEs;
     private void Start()
     {
-        //‰Šúƒv[ƒ‹‚Ìì¬
+        //åˆæœŸãƒ—ãƒ¼ãƒ«ã®ä½œæˆ
         pooledSEs = new List<GameObject>();
         foreach (ObjectPoolSE item in sesToPool)
         {
@@ -57,7 +57,7 @@ public class SEManager : MonoBehaviour
             voiceSource.volume = saveData.jsonProperty.seVolume;
         }
     }
-    //ƒv[ƒ‹‚Ì’†‚Å”ñƒAƒNƒeƒBƒu‚Ì‚â‚Â‚ğŒ©‚Â‚¯‚éA–³‚¯‚ê‚ÎŠg’£
+    //ãƒ—ãƒ¼ãƒ«ã®ä¸­ã§éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã®ã‚„ã¤ã‚’è¦‹ã¤ã‘ã‚‹ã€ç„¡ã‘ã‚Œã°æ‹¡å¼µ
     private GameObject GetPooledObject(string name)
     {
         for (int i = 0; i < pooledSEs.Count; i++)
@@ -87,13 +87,13 @@ public class SEManager : MonoBehaviour
         return null;
     }
 
-    //”ñƒ‹[ƒvSE‚ğo‚·
+    //éãƒ«ãƒ¼ãƒ—SEã‚’å‡ºã™
     /// <summary>
-    /// SEÄ¶ŠÖ”B
+    /// SEå†ç”Ÿé–¢æ•°ã€‚
     /// </summary>
-    /// <param name="name">ObjectPoolSEƒNƒ‰ƒX‚É“o˜^‚µ‚Ä‚ ‚éSE‚Ì–¼‘O</param>
-    /// <param name="is3D">‹——£‚É‚æ‚Á‚ÄŒ¸Š‚·‚é‚©</param>
-    /// <param name="position">SE‚Ì”­¶‚·‚éêŠ</param>
+    /// <param name="name">ObjectPoolSEã‚¯ãƒ©ã‚¹ã«ç™»éŒ²ã—ã¦ã‚ã‚‹SEã®åå‰</param>
+    /// <param name="is3D">è·é›¢ã«ã‚ˆã£ã¦æ¸›è¡°ã™ã‚‹ã‹</param>
+    /// <param name="position">SEã®ç™ºç”Ÿã™ã‚‹å ´æ‰€</param>
     public void PlaySE(string name, bool is3D, Vector3 position)
     {
         GameObject se = GetPooledObject(name);

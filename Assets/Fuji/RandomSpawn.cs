@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,12 +47,12 @@ public class RandomSpawn : MonoBehaviour
         {
             Vector3 NGAreaCenter = transform.position + NGArea[i].center;
             Vector3 NGAreaSize = NGArea[i].size;
-            //X‚ªNG”ÍˆÍŠO‚È‚çŸ‚ÌNG”ÍˆÍ‚ğŒŸ“¢
+            //XãŒNGç¯„å›²å¤–ãªã‚‰æ¬¡ã®NGç¯„å›²ã‚’æ¤œè¨
             if (spawnPosition.x < NGAreaCenter.x - (NGAreaSize.x * 0.5f) || NGAreaCenter.x + (NGAreaSize.x * 0.5f) < spawnPosition.x)
             {
                 continue;
             }
-            //NG‚È‚çY‚ğŒŸ“¢
+            //NGãªã‚‰Yã‚’æ¤œè¨
             else
             {
                 if (spawnPosition.y < NGAreaCenter.y - (NGAreaSize.y * 0.5f) || NGAreaCenter.y + (NGAreaSize.y * 0.5f) < spawnPosition.y)
@@ -61,7 +61,7 @@ public class RandomSpawn : MonoBehaviour
                 }
                 else
                 {
-                    //XY‚ªNG‚Ì‚Æ‚«Z‚ğŒŸ“¢AZ‚àNG‚È‚çNG”ÍˆÍ“à‚È‚Ì‚Åfalse
+                    //XYãŒNGã®ã¨ãZã‚’æ¤œè¨ã€Zã‚‚NGãªã‚‰NGç¯„å›²å†…ãªã®ã§false
                     if (spawnPosition.z < NGAreaCenter.z - (NGAreaSize.z * 0.5f) || NGAreaCenter.z + (NGAreaSize.z * 0.5f) < spawnPosition.z)
                     {
                         continue;
@@ -73,7 +73,7 @@ public class RandomSpawn : MonoBehaviour
                 }
             }
         }
-        //for‚ğ”²‚¯‚ç‚ê‚½‚È‚çNG”ÍˆÍŠO‚È‚Ì‚Å—Ç‚µ‚Æ‚·‚é
+        //forã‚’æŠœã‘ã‚‰ã‚ŒãŸãªã‚‰NGç¯„å›²å¤–ãªã®ã§è‰¯ã—ã¨ã™ã‚‹
         return true;
     }
     public void Spawn(int quantity)

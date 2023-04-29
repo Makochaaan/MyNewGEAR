@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,31 +41,47 @@ public class PlayerUI : MonoBehaviour
             slotLevelTexts[i].text = "Lv.0";
             slotIcons[i] = slots[i].transform.GetChild(3).GetComponent<Image>();
             slotIcons[i].gameObject.SetActive(false);
-            //ActiveStateChangeUI(i, false);
 
+            //UIが起動していくアニメーション
             Sequence openSequence = DOTween.Sequence();
-            //����A�j���[�V������K���I�����Ă���J���A�j���[�V����
             openSequence.Append(slots[i].rectTransform.DOScale(Vector3.one * 0.85f, 1).SetEase(Ease.OutQuint).SetDelay(i*0.5f))
-                        //.Join(slotFrames[i].rectTransform.DOScale(Vector3.zero,0).SetEase(Ease.OutQuint))
                         .Append(slotLevelTexts[i].DOFade(1, 1));
 
         }
-        //�������ϊ������ߒ���4�Ԗڂ��ł��Ȃ��̂ł����ł��
-        //ActiveStateChangeUI(4, false);
     }
 
 
-    //PartsManager�����0��(��)��5��(�r)�������邱�Ƃ�����̂�UI�\�����Ă��Ȃ������͂����Œe��
-    //���̂������PartsManager�ɏ����ƎG���ɂȂ�Ɣ��f����
+    //PartsManagerからは0番(頭)と5番(脚)が送られることもあるのでUI表示していないそれらはここで弾く
+    //このくだりをPartsManagerに書くと雑多になると判断した
     private bool IsVaildSlotNumber(int slotNumber)
     {
         return (slotNumber == 0 || slotNumber == 5) ? false : true;
     }
-    //�����g��UI�̘g�͓���0�Ԃ̕������Ă���̂ŏC��
+    /*
+     * 装備枠(配列)とUIで表示する枠番号
+     * 頭(0)      表示なし
+     * 左腕(1)    配列0番、表示は1番
+     * 胴(2)      配列1番、表示は2番
+     * 右腕(3)    配列2番、表示は3番
+     * 背(4)      配列3番、表示は4番
+     * 脚(5)      表示なし
+     */
+
+    /*
+     * UIで表示している枠について記述するとき、配列での番号でなく表示している番号で記述している
+     * (この方が混乱しないよね、どうだろ)
+     * 
+     */
+    /// <summary>
+    /// 装備枠での番号をUI表示枠での番号に変換する
+    /// </summary>
+    /// <param name="slotNumber">装備枠の配列での番号</param>
+    /// <returns></returns>
     private int GetSlotNumberForUI(int slotNumber)
     {
         return slotNumber -1;
     }
+    //装備をオンオフしたときのUI見た目変更
     public void ActiveStateChangeUI(int slotNumber, bool activate)
     {
         if (IsVaildSlotNumber(slotNumber))
@@ -75,6 +91,7 @@ public class PlayerUI : MonoBehaviour
             slots[GetSlotNumberForUI(slotNumber)].rectTransform.localScale = activate ? Vector3.one : Vector3.one * 0.85f;
         }
     }
+    //装備を変更したときのアイコン変更
     public void ChangeSlotIcon(int slotNumber, Sprite icon)
     {
         if (IsVaildSlotNumber(slotNumber))
@@ -91,6 +108,7 @@ public class PlayerUI : MonoBehaviour
             }
         }
     }
+    //枠レベルが変わった時の表示変更
     public void ChangeSlotLevel(int slotNumber, int slotLevel)
     {
         if (IsVaildSlotNumber(slotNumber))
@@ -99,6 +117,8 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    //Updateで更新が必要なUIはここへ
+    //ObjectPoolUIよりはPlayerUIの機能だと思ったのでここに書いている
     private void Update()
     {
         foreach (PooledUI pooledUI in ObjectPoolUI.sharedInstance.pooledUIs)
@@ -117,7 +137,7 @@ public class PlayerUI : MonoBehaviour
             }
         }
 
-        //�ˊу^�C�g���{�^��
+        //突貫タイトルボタン
         if (MoveForPlayer._gameInputs.Player.ToTitle.WasPressedThisFrame())
         {
             SceneManager.LoadScene("TitleScene");

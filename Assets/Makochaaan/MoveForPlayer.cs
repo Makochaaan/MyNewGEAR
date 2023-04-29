@@ -44,10 +44,12 @@ public class MoveForPlayer : MonoBehaviour
     }
     private void Start()
     {
+        //最初のレディー、ゴー！的な時間は操作できない
         Invoke("EnableWithDelay",3);
     }
     void EnableWithDelay()
     {
+        // Invokeで呼んでると参照つかないんだな！やべえな！コルーチンすっか！
         // Input Actionを機能させるためには、有効化する必要がある
         _gameInputs.Enable();
     }

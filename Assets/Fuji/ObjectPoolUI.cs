@@ -1,9 +1,9 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-//ƒv[ƒ‹‚·‚éUI‚Ìî•ñ
+// ãƒ—ãƒ¼ãƒ«ã™ã‚‹UIã®æƒ…å ±
 [System.Serializable]
 public class ObjectPoolUIInfo
 {
@@ -13,7 +13,7 @@ public class ObjectPoolUIInfo
     public int initialPool;
 }
 
-//ã‹L‚Ìî•ñ‚ğ‚à‚Æ‚Éƒv[ƒ‹‚³‚ê‚½UI‚Ìî•ñA
+// ä¸Šè¨˜ã®æƒ…å ±ã‚’ã‚‚ã¨ã«ãƒ—ãƒ¼ãƒ«ã•ã‚ŒãŸUIã®æƒ…å ±
 public class PooledUI
 {
     public GameObject uiObject;
@@ -24,8 +24,11 @@ public class PooledUI
 
 public class ObjectPoolUI : MonoBehaviour
 {
+    // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
     public static ObjectPoolUI sharedInstance;
+    // ãƒ—ãƒ¼ãƒ«ã—ãŸã„UIæƒ…å ±ã®ãƒªã‚¹ãƒˆ
     public List<ObjectPoolUIInfo> infoList;
+    // ãƒ—ãƒ¼ãƒ«ã•ã‚ŒãŸUIã®ãƒªã‚¹ãƒˆ
     public List<PooledUI> pooledUIs;
     private void Awake()
     {
@@ -37,7 +40,7 @@ public class ObjectPoolUI : MonoBehaviour
     }
     private void InitializePool()
     {
-        //‰Šúƒv[ƒ‹‚Ìì¬
+        //åˆæœŸãƒ—ãƒ¼ãƒ«ã®ä½œæˆ
         pooledUIs = new List<PooledUI>();
         foreach (ObjectPoolUIInfo info in infoList)
         {
@@ -54,7 +57,7 @@ public class ObjectPoolUI : MonoBehaviour
             }
         }
     }
-    //ƒv[ƒ‹‚Ì’†‚Å”ñƒAƒNƒeƒBƒu‚Ì‚â‚Â‚ğŒ©‚Â‚¯‚éA–³‚¯‚ê‚ÎŠg’£
+    //ãƒ—ãƒ¼ãƒ«ã®ä¸­ã§éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã®ã‚„ã¤ã‚’è¦‹ã¤ã‘ã‚‹ã€ç„¡ã‘ã‚Œã°æ‹¡å¼µ
     public PooledUI GetPooledObject(string name)
     {
         for (int i = 0; i < pooledUIs.Count; i++)

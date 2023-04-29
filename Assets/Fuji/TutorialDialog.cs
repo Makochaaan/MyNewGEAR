@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +11,7 @@ public class TutorialDialog : MonoBehaviour
     [SerializeField] private float time;
     private RectTransform dialogBackground,dialogFrame;
     private TextMeshProUGUI dialogText;
-    //‹¤—p‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+    //å…±ç”¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
     private static Sequence openSequence, closeSequence;
 
     // Start is called before the first frame update
@@ -28,7 +28,7 @@ public class TutorialDialog : MonoBehaviour
         if(other.gameObject.name == "Player")
         {
             openSequence = DOTween.Sequence();
-            //•Â‚¶‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•K‚¸I—¹‚µ‚Ä‚©‚çŠJ‚­ƒAƒjƒ[ƒVƒ‡ƒ“
+            //é–‰ã˜ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¿…ãšçµ‚äº†ã—ã¦ã‹ã‚‰é–‹ãã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
             closeSequence.Complete();
             dialogText.text = myDialog;
             openSequence.Append(dialogBackground.DOSizeDelta(new Vector2(400, 200), time).SetEase(Ease.OutQuint))
@@ -41,7 +41,7 @@ public class TutorialDialog : MonoBehaviour
         if (other.gameObject.name == "Player")
         {
             closeSequence = DOTween.Sequence();
-            //ŠJ‚­ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•K‚¸I—¹‚µ‚Ä‚©‚ç•Â‚¶‚éƒAƒjƒ[ƒVƒ‡ƒ“
+            //é–‹ãã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¿…ãšçµ‚äº†ã—ã¦ã‹ã‚‰é–‰ã˜ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
             openSequence.Complete();
             closeSequence.Append(dialogText.DOFade(0, time))
                          .Append(dialogBackground.DOSizeDelta(Vector2.zero, time).SetEase(Ease.OutQuint))

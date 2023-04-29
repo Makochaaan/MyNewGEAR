@@ -16,7 +16,7 @@ public class PartsSlot
 public class PlayerPartsManager : MonoBehaviour
 {
     private PlayerUI myPlayerUI;
-    //入力、現在レイが当たって選択中となっているもの、有効なアイテムを選択しているか、装備枠
+    //入力、直前まで選択中だったもの、現在レイが当たって選択中のもの、有効なアイテムを選択しているか、装備枠
     private GameInputs inputActions;
     private Transform selectionBefore, selectionAfter;
     private bool selecting;
@@ -59,7 +59,7 @@ public class PlayerPartsManager : MonoBehaviour
     {
         //選択用レイをとばす
         PartsSelectRay();
-        //押している間武器使用
+        //武器使用ボタンを押している間武器使用
         if(inputActions.Player.Fire.ReadValue<float>() == 1)
         {
             UseActiveWeapon();
@@ -67,11 +67,12 @@ public class PlayerPartsManager : MonoBehaviour
     }
     private void PartsSelectRay()
     {
-        //レイがアイテムに当たっているときアイテムの輪郭を描画する。もっとシンプルにならないものか
+        //画面中央に向かってレイ、当たったものを格納する、何も当たらなかったらnull
         Ray ray = Camera.main.ViewportPointToRay(new Vector2(0.5f, 0.5f));
         RaycastHit hit;
         selectionAfter = Physics.Raycast(ray, out hit, 100) ? hit.transform : null;
 
+        //レイがアイテムに当たっているときアイテムの輪郭を描画する。もっとシンプルにならないものか
         //選択が変わっていないならreturn
         if (selectionBefore == selectionAfter)
         {
@@ -80,21 +81,23 @@ public class PlayerPartsManager : MonoBehaviour
         //選択が変わっているなら
         else
         {
-            //前の選択が有効だったなら輪郭をなくす
+            //※"レイが当たったオブジェクトが輪郭スクリプトを持っていること"を有効、持っていないことを無効と表記する※
+
+            //前の選択が有効なら輪郭をなくす
             if (selectionBefore != null && selectionBefore.TryGetComponent(out Outline outlineOld))
             {
                 outlineOld.OutlineWidth = 0;
             }
-            //現在の選択がnullか無効なオブジェクトなら選択を更新してreturn
-            //nullnull　null無効　有効null　有効無効　無効null　無効無効
+            //現在の選択がnullか無効なら選択を更新してreturn
+            //BeforeとAfterの組み合わせはnullnull　null無効　有効null　有効無効　無効null　無効無効の6通り
             if (selectionAfter == null || !selectionAfter.TryGetComponent(out Outline outlineNew))
             {
                 selecting = false;
                 selectionBefore = selectionAfter;
                 return;
             }
-            //有効なオブジェクトを選択しているなら
-            //null有効　有効有効　無効有効
+            //有効なオブジェクトを選択しているなら選択を更新、輪郭を表示する
+            //組み合わせはnull有効　有効有効　無効有効
             else
             {
                 selecting = true;
@@ -109,7 +112,7 @@ public class PlayerPartsManager : MonoBehaviour
         //有効な選択なし
         if (!selecting)
         {
-            //パーツが既にあるならオンオフ切り替え、なければreturn
+            //パーツが枠に既にあるならオンオフ切り替え、なければreturn
             if (partsSlots[slotNumberInArray].parts != null)
             {
                 bool currentState = partsSlots[slotNumberInArray].parts.isActive;
@@ -147,7 +150,7 @@ public class PlayerPartsManager : MonoBehaviour
                 partsOnParts = true;
                 partsSlots[slotNumber].slotTransform = myArmScript.myHandTransform;
             }
-            //腕以外-腕以外、腕以外-腕、腕-腕の場合、古い方を解除する
+            //(旧装備/新装備が)腕以外/腕以外、腕以外/腕、腕/腕の場合、古い方を解除する
             //装備を持った腕が交換されるとき枠の場所を元に戻す
             else
             {
@@ -179,7 +182,7 @@ public class PlayerPartsManager : MonoBehaviour
         //枠のUIを装備したパーツのものにする
         myPlayerUI.ChangeSlotIcon(slotNumber, selectedParts.slotIcon);
         selectedParts.OnEquipped(partsSlots[slotNumber].slotTransform, partsSlots[slotNumber].slotLevel);
-        
+        //装備エフェクト
         VFXManager.SharedInstance.PlayVFX($"Equip{(partsSlots[slotNumber].slotLevel <= 6 ? partsSlots[slotNumber].slotLevel : 6)}", transform.position, transform.rotation);
     }
     //オン状態の装備を使う

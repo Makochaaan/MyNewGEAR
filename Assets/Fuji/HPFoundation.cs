@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
@@ -8,7 +8,9 @@ using UnityEngine.UI;
 
 public class HPFoundation : MonoBehaviour
 {
+    // 最大HP、現在HP
     public int maxHP, currentHP;
+    // HPバー関係
     [SerializeField] private GameObject hpBarPrefab;
     private GameObject myHPBar;
     private RectTransform hpBarRectTransform;
@@ -16,6 +18,11 @@ public class HPFoundation : MonoBehaviour
     [SerializeField] private bool showHPBar;
     private float hpBarTimer;
 
+    /// <summary>
+    /// ダメージ関数。ダメージ数値とそれを表示するための位置を与える
+    /// </summary>
+    /// <param name="damage">ダメージ</param>
+    /// <param name="position">ダメージ表示のための位置情報</param>
     public virtual void Damage(int damage, Vector3 position)
     {
         currentHP -= damage;
@@ -23,6 +30,9 @@ public class HPFoundation : MonoBehaviour
         if (showHPBar) ShowHPBar();
         if (currentHP <= 0) OnHPZero();
     }
+    /// <summary>
+    /// HP0の時の関数
+    /// </summary>
     protected virtual void OnHPZero()
     {
         if (myHPBar != null)
@@ -31,7 +41,12 @@ public class HPFoundation : MonoBehaviour
         }
         Debug.Log("hp zero from base class");
     }
-
+    /// <summary>
+    /// 時間差でSetActive(false)する。
+    /// </summary>
+    /// <param name="delay">何秒後にSetActive(false)するか</param>
+    /// <param name="obj">何をSetActive(false)するか</param>
+    /// <returns></returns>
     private IEnumerator DeactivateWithDelay(float delay, GameObject obj)
     {
         yield return new WaitForSeconds(delay);
@@ -39,10 +54,10 @@ public class HPFoundation : MonoBehaviour
     }
 
     /// <summary>
-    /// �_���[�W�\���֐��BUI�Ƀ_���[�W��\������B
+    /// ダメージ表示関数。UIにダメージを表示する。
     /// </summary>
-    /// <param name="damage">�_���[�W</param>
-    /// <param name="position">�q�b�g�ꏊ</param>
+    /// <param name="damage">ダメージ</param>
+    /// <param name="position">ヒット場所</param>
     public void ShowDamage(int damage, Vector3 position)
     {
         PooledUI damageText = ObjectPoolUI.sharedInstance.GetPooledObject("DamageText");
@@ -51,9 +66,12 @@ public class HPFoundation : MonoBehaviour
         damageText.uiObject.SetActive(true);
         StartCoroutine(DeactivateWithDelay(damageText.duration, damageText.uiObject));
     }
+    /// <summary>
+    /// ダメージ時にHPバーを表示する
+    /// </summary>
     public void ShowHPBar()
     {
-        //�܂�������HP�o�[�������Ă��Ȃ��Ȃ琶������
+        //まだ自分のHPバーを持っていないなら生成する
         if(myHPBar==null)
         {
             myHPBar = Instantiate(hpBarPrefab);
@@ -72,7 +90,7 @@ public class HPFoundation : MonoBehaviour
         if (myHPBar != null && myHPBar.activeInHierarchy)
         {
             hpBarTimer += Time.deltaTime;
-            //StartCoroutine(Deact...3,myHPBar)�Ƃ���ƁA3�b��1���u�����銴���ɂȂ�
+            //StartCoroutine(Deact...3,myHPBar)とすると、3秒に1回一瞬消える感じになる
             if (hpBarTimer >= 3) StartCoroutine(DeactivateWithDelay(0, myHPBar));
             hpBarRectTransform.position = Camera.main.WorldToScreenPoint(transform.position);
         }
